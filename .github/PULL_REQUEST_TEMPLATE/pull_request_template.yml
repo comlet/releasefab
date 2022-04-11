@@ -1,0 +1,105 @@
+name: Pull Request
+description: Create a pull request
+title: [PR] <title>
+body:
+- type: textarea
+  attributes:
+    label: Description
+    description: Please include a summary of the change. Please also include relevant motivation and context. List any dependencies that are required for this change.
+  validations:
+    required: true
+
+- type: input
+  attributes:
+    label: Issue ID
+    description: Please provide the ID of the Issue associated with this PR
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Type of change
+    description: Please delete options that are not relevant.
+    placeholder: |
+      - [ ] Bug fix (non-breaking change which fixes an issue)
+      - [ ] New feature (non-breaking change which adds functionality)
+      - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+      - [ ] This change requires a documentation update
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: How Has This Been Tested?
+    description: Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration.
+    placeholder: |
+      - [ ] Test A
+      - [ ] Test B
+  validations:
+    required: false
+
+# Checklist:
+
+- type: checkboxes
+  attributes:
+    label: Coding Style Guidelines
+    description: Does your code follow the projects coding styles?
+    options:
+    - label: My code follows the style guidelines of this project
+      required: true
+
+- type: checkboxes
+  attributes:
+    label: Self-Review
+    description: Did you review your own code?
+    options:
+    - label: I have performed a self-review of my own code
+      required: true
+
+- type: checkboxes
+  attributes:
+    label: Comments
+    description: Did you comment the code you added?
+    options:
+    - label: I have commented my code, particularly in hard-to-understand areas
+      required: true
+
+- type: checkboxes
+  attributes:
+    label: Documentation
+    description: Did you update the documentation?
+    options:
+    - label: I have made corresponding changes to the documentation
+      required: true
+
+- type: checkboxes
+  attributes:
+    label: Warnings
+    description: Does your code generate new warnings?
+    options:
+    - label: My changes generate no new warnings
+      required: true
+
+- type: checkboxes
+  attributes:
+    label: New Tests
+    description: Did you write tests for your code?
+    options:
+    - label: I have added tests that prove my fix is effective or that my feature works
+      required: false
+
+- type: checkboxes
+  attributes:
+    label: Existing Tests
+    description: Do the existing tests still pass?
+    options:
+    - label: New and existing unit tests pass locally with my changes
+      required: true
+
+- type: checkboxes
+  attributes:
+    label: Dependent Changes
+    description: Did you merge all dependent changes, if any?
+    options:
+    - label: Any dependent changes have been merged and published in downstream modules
+      required: true

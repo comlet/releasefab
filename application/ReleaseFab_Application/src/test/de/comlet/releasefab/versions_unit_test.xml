@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<releasefab version="1.0.0">
+  <deliveries>
+    <delivery name="3.0.0.0" integrator="Test-Integrator" created="2001-04-19 06:25:21.002 GMT+02:00" />
+    <delivery name="2.0.0.0" integrator="Test-Integrator" created="2001-04-19 06:25:21.001 GMT+02:00" />
+    <delivery name="1.0.0.0" integrator="Test-Integrator" created="2001-04-19 06:25:21.000 GMT+02:00" />
+  </deliveries>
+  <components>
+    <component name="Test-Component" relevant="true">
+      <importers>
+        <importer name="Version" version="1.0.0">
+          <assigner name="Ignore" />
+          <parameters number="0" />
+          <deliveryInformation name="3.0.0.0" isNew="false">
+            <content>
+              <string>W.X.Y.Z</string>
+            </content>
+          </deliveryInformation>
+          <deliveryInformation name="2.0.0.0" isNew="false">
+            <content>
+              <string>W.X.Y.Z</string>
+            </content>
+          </deliveryInformation>
+          <deliveryInformation name="1.0.0.0" isNew="false">
+            <content>
+              <string>W.X.Y.Z</string>
+            </content>
+          </deliveryInformation>
+        </importer>
+        <importer name="Important Information" version="1.0.0">
+          <assigner name="Ignore" />
+          <parameters number="0" />
+          <deliveryInformation name="3.0.0.0" isNew="false">
+            <content>
+              <string>Important Information</string>
+            </content>
+          </deliveryInformation>
+          <deliveryInformation name="2.0.0.0" isNew="false">
+            <content>
+              <string>Important Information</string>
+            </content>
+          </deliveryInformation>
+          <deliveryInformation name="1.0.0.0" isNew="false">
+            <content>
+              <string>Important Information</string>
+            </content>
+          </deliveryInformation>
+        </importer>
+        <importer name="Git Commits" version="1.0.0">
+          <assigner name="Ignore" />
+          <parameters number="0" />
+          <deliveryInformation name="3.0.0.0" isNew="false">
+            <content>
+              <tag hash="e7847c60478282e08bf3de15ded9c56019b0d028" target="e7847c60478282e08bf3de15ded9c56019b0d028" type="former">V3.6.2.0</tag>
+              <tag hash="e7847c60478282e08bf3de15ded9c56019b0d028" target="e7847c60478282e08bf3de15ded9c56019b0d028" type="latest">V3.7.0.0</tag>
+              <branch>release</branch>
+              <commit>
+                <hash>47c60478</hash>
+                <time>1534429955</time>
+                <alm-id>1234</alm-id>
+                <synopsis>adding new feature</synopsis>
+                <internal-doc>adding a new feature that will improve the application</internal-doc>
+                <external-doc />
+              </commit>
+            </content>
+          </deliveryInformation>
+          <deliveryInformation name="2.0.0.0" isNew="false">
+            <content>
+              <tag hash="e7847c60478282e08bf3de15ded9c56019b0d028" target="e7847c60478282e08bf3de15ded9c56019b0d028" type="former">V3.6.2.0</tag>
+              <tag hash="e7847c60478282e08bf3de15ded9c56019b0d028" target="e7847c60478282e08bf3de15ded9c56019b0d028" type="latest">V3.7.0.0</tag>
+              <branch>release</branch>
+              <commit>
+                <hash>47c60478</hash>
+                <time>1534429955</time>
+                <alm-id>1234</alm-id>
+                <synopsis>adding new feature</synopsis>
+                <internal-doc>adding a new feature that will improve the application</internal-doc>
+                <external-doc />
+              </commit>
+            </content>
+          </deliveryInformation>
+          <deliveryInformation name="1.0.0.0" isNew="false">
+            <content>
+              <tag hash="e7847c60478282e08bf3de15ded9c56019b0d028" target="e7847c60478282e08bf3de15ded9c56019b0d028" type="former">V3.6.2.0</tag>
+              <tag hash="e7847c60478282e08bf3de15ded9c56019b0d028" target="e7847c60478282e08bf3de15ded9c56019b0d028" type="latest">V3.7.0.0</tag>
+              <branch>release</branch>
+              <commit>
+                <hash>47c60478</hash>
+                <time>1534429955</time>
+                <alm-id>1234</alm-id>
+                <synopsis>adding new feature</synopsis>
+                <internal-doc>adding a new feature that will improve the application</internal-doc>
+                <external-doc />
+              </commit>
+            </content>
+          </deliveryInformation>
+        </importer>
+      </importers>
+    </component>
+  </components>
+</releasefab>

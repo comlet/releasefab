@@ -1,0 +1,36 @@
+test {
+    workingDir = "$rootProjectPath"
+
+    moduleOptions {
+        addOpens = ['releasefab.git.plugin/de.comlet.releasefab.git.plugin' : 'org.junit.platform.commons']
+    }
+}
+
+task createDelivery(type: Copy, dependsOn: 'syncDependencies') {
+    doFirst {
+        println "Copying JAR of module $project.name to delivery folder..."
+    }
+    from(jar.archiveFile) {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    into "$rootProductsDir/delivery/plugins"
+}
+
+task syncDependencies(type: Copy) {
+    doFirst {
+        println "Copying dependencies of module $project.name to delivery folder..."
+    }
+    from(configurations.compileClasspath) {
+        exclude { it.file.name.contains('swt') }
+        exclude { it.file.name.contains('Git') }
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    into "$rootProductsDir/delivery/libs"
+}
+
+dependencies {
+    implementation project(':ReleaseFab_Library')
+    implementation project(':ReleaseFab_Git_Classes')
+
+    testRuntimeOnly project(':ReleaseFab_Git_Service')
+}

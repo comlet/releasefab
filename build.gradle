@@ -1,0 +1,276 @@
+plugins {
+    id 'org.javamodularity.moduleplugin' version '1.8.8' apply false
+    id 'org.sonarqube' version '3.3'
+    id 'org.ysb33r.doxygen' version '0.7.0'
+}
+
+project.ext.set("rootProjectPath", projectDir)
+project.ext.set("rootProductsDir", projectDir.toString() + "_products")
+
+def projectRoot = projectDir
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'checkstyle'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main']
+                buildDir = "$rootProductsDir/bin/$project.name"
+            }
+            resources {
+                srcDirs = ['src/main']
+            }
+        }
+        test {
+            java {
+                srcDirs = ['src/test']
+            }
+        }
+    }
+
+    // Source Sets need to be changed for subprojects before applying the Modularity Plugin
+    // Otherwise the plugin is looking for modules in the wrong directory
+    apply plugin: "org.javamodularity.moduleplugin"
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+
+        testLogging {
+            events 'PASSED', 'FAILED', 'SKIPPED'
+        }
+    }
+
+    checkstyle {
+        toolVersion = 9.3
+    }
+
+    checkstyleMain {
+        exclude '**/module-info.java'
+    }
+
+    checkstyleTest {
+        exclude '**/module-info.java'
+    }
+
+    cleanEclipse {
+        doFirst {
+            println('clean eclipse')
+        }
+        delete "$rootProductsDir/../Eclipse-ReleaseFab"
+    }
+
+    eclipse {
+        project {
+            file {
+                withXml {
+                    def linkedResources = it.asNode().get('linkedResources')
+                    linkedResources[0]?.appendNode('link', '')
+                    def linkMain = linkedResources[0]?.get('link')
+                    linkMain[0]?.appendNode('name', 'main')
+                    linkMain[0]?.appendNode('type', '2')
+                    def linkedSource = sourceSets.main.java.srcDirs[0].absolutePath.replaceAll("\\\\", "/")
+                    linkMain[0]?.appendNode('location', linkedSource)
+
+                    linkedResources[0]?.appendNode('link', '')
+                    def linkTest = linkedResources[0]?.get('link')
+                    linkTest[1]?.appendNode('name', 'test')
+                    linkTest[1]?.appendNode('type', '2')
+                    def linkedTestSource = sourceSets.test.java.srcDirs[0].absolutePath.replaceAll("\\\\", "/")
+                    linkTest[1]?.appendNode('location', linkedTestSource)
+                }
+            }
+        }
+
+        classpath {
+            file {
+                whenMerged { classpath ->
+                    def newClasspathEntries = new ArrayList()
+                    def classpathEntries = classpath.getEntries()
+                    classpathEntries.each { entry ->
+                        if (!(entry.getKind() == 'output' || (entry.getKind() == 'src' && entry.@path == '.'))) {
+                            newClasspathEntries.add(entry)
+                        }    
+                    }
+                    classpath.setEntries(newClasspathEntries)
+                }
+
+                withXml {
+                    def nodes = it.asNode().get('classpathentry')
+                    nodes.each { node -> 
+                        if (node.@kind == 'src' || node.@kind == 'lib') {
+                            def attributes = node.children()[0].get('attribute')
+                            attributes[0]?.@name = 'module'
+                            attributes[0]?.@value = 'true'
+                        }
+                        if (node.@kind == 'src' && (node.@output == 'bin/test' || node.@output == 'bin/main')) {
+                            def attributes = node.children()[0]
+                            node.remove(attributes)
+                            node.@path = node.@path.substring(4, 8)
+                            node.attributes().remove('output')
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    task createEclipseWorkspace(type: Copy) {
+        doFirst {
+            println "Copying Eclipse specific files of module $project.name to workspace folder..."
+        }
+        from("$rootProjectPath/application/$project.name") {
+            include '.project'
+            include '.classpath'
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        }
+        into "$rootProductsDir/../Eclipse-ReleaseFab/$project.name"
+    }
+
+    task deleteTempEclipseFiles(type: Delete) {
+        delete fileTree('.').matching {
+            include '.project'
+            include '.classpath'
+        }
+        delete '.settings'
+    }
+
+    createEclipseWorkspace.dependsOn 'eclipse'
+    createEclipseWorkspace.finalizedBy 'deleteTempEclipseFiles'
+
+    ext {
+        swt_version = '3.118.0'
+        osgi_platform = 'win32.win32.x86_64'
+        default_platform = 'windows'
+
+        if (project.hasProperty('PLATFORM')) {
+            if ("$PLATFORM".contains('linux')) {
+                osgi_platform = 'gtk.linux.x86_64'
+            }
+        }
+        else {
+            PLATFORM = default_platform
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                // The maven property ${osgi.platform} is not handled by Gradle
+                // so we replace the dependency, using the osgi platform from the project settings
+                substitute module('org.eclipse.platform:org.eclipse.swt.${osgi.platform}') with module("org.eclipse.platform:org.eclipse.swt.$osgi_platform:$swt_version")
+            }
+        }
+    }
+
+    dependencies {
+        implementation group: 'org.jdom', name: 'jdom2', version: '2.0.6.1'
+        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
+        implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.10'
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
+        implementation group: 'org.eclipse.platform', name: 'org.eclipse.swt', version: '3.118.0'
+
+        implementation group: 'junit', name: 'junit', version: '4.13.2'
+        implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.2'
+        implementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.8.2'
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.2'
+
+        implementation group: 'org.xmlunit', name: 'xmlunit-assertj', version: '2.8.4'
+        implementation group: 'org.xmlunit', name: 'xmlunit-assertj3', version: '2.8.4'
+        implementation group: 'org.xmlunit', name: 'xmlunit-core', version: '2.8.4'
+        implementation group: 'org.xmlunit', name: 'xmlunit-legacy', version: '2.8.4'
+        implementation group: 'org.xmlunit', name: 'xmlunit-matchers', version: '2.8.4'
+        implementation group: 'org.xmlunit', name: 'xmlunit-placeholders', version: '2.8.4'
+    }
+}
+
+def scripts = copySpec {
+    from("$rootProductsDir"){
+        include '*.xml'
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    from("$rootProjectPath/scripts"){
+        include 'releasefab.bat'
+        include 'releasefab.sh'
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+def config = copySpec {
+    from("$rootProjectPath/application/config"){
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+def settings = copySpec {
+    from("$rootProjectPath/application") {
+        include 'settings.xml'
+        include 'logback.xml'
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+def rootConfig = copySpec {
+    from("$rootProjectPath/config") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+task copyFiles(type: Copy) {
+    into "$rootProductsDir"
+    into("delivery/config") {
+        with config
+    }
+    into("") {
+        with settings
+    }
+    into("") {
+        rootConfig
+    }
+    into("delivery") {
+        with scripts
+    }
+}
+
+task ci_cd {
+    subprojects.each { dependsOn("$it.name:build") }
+    dependsOn 'sonarqube'
+}
+
+doxygen {
+    source = "$rootProjectPath"
+    include '**/*.java'
+
+    generate_html true
+    generate_latex false
+    template "$rootProjectPath/config/doxyfile"
+    outputDir = "$rootProductsDir/doxygen"
+
+    if (project.hasProperty('VERSION')){
+        project_number "$VERSION"
+    }
+    else {
+        project_number ""
+    }
+
+    executables {
+        doxygen version : '1.9.1'
+    }
+}
+
+task removeTempDoxygenFiles(type: Delete) {
+    delete "$rootProjectPath/build"
+}
+
+tasks.doxygen.finalizedBy 'removeTempDoxygenFiles'

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<!-- general settings for ReleaseFab -->
+    <setting name="PROJECT_FILE_NAME">projectconfig.xml</setting>
+    <setting name="PROJECT_FILE_PATH">./config/</setting>
+    <setting name="USER_SETTINGS_FILE">usersettings.xml</setting>
+    <setting name="USER_SETTINGS_PATH">ReleaseFab/</setting>
+</configuration>

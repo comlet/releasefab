@@ -1,0 +1,11 @@
+#!/bin/sh
+SCRIPT_NAME=$(basename "$0")
+APP_NAME=${SCRIPT_NAME%.sh}
+
+#If necessary, adjust "RELEASEFAB_HOME" to your custom directory
+RELEASEFAB_HOME="build_tools/releasefab"
+DIR="${0%/*}"
+
+
+
+"$DIR/$RELEASEFAB_HOME/bin/java" $CDS_JVM_OPTS "-Dlogback.configurationFile=$DIR/$RELEASEFAB_HOME/logback.xml" -p "$DIR/$RELEASEFAB_HOME/app" -m releasefab.application/de.comlet.releasefab.Main "source=$DIR" "generalsettings=$DIR/$RELEASEFAB_HOME" "$@"
