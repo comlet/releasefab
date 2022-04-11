@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <releasefab version="1.0.0">
-  <deliveries />
+  <deliveries>
+    <delivery name="1.0.0" integrator="created by a build server" created="2022-04-11 20:31:38.124 GMT+02:00" />
+  </deliveries>
   <components>
     <component name="releasefab" relevant="true">
       <importers>
@@ -11,16 +13,40 @@
             <parameter>(?ms).*VERSION = "(\d+\.)?(\d+\.)?(\*|\d+)"*</parameter>
             <parameter>${1}${2}${3}</parameter>
           </parameters>
+          <deliveryInformation name="1.0.0" isNew="true">
+            <content>
+              <string>1.0.0</string>
+            </content>
+          </deliveryInformation>
         </importer>
         <importer name="Important Information" version="1.0.0">
           <assigner name="Ignore" />
           <parameters number="0" />
+          <deliveryInformation name="1.0.0" isNew="false">
+            <content>
+              <string>-</string>
+            </content>
+          </deliveryInformation>
         </importer>
         <importer name="Git Commits" version="1.0.0">
           <assigner name="Git Commits" />
           <parameters number="1">
             <parameter>./../../../../releasefab</parameter>
           </parameters>
+          <deliveryInformation name="1.0.0" isNew="true">
+            <content>
+              <branch>main</branch>
+              <tag hash="5cb16067acd37efded86cd43bc46b43823bdb181" target="05c0f3c5b065308b3236fbb3aa51372b2fdd98f4" type="latest">1.0.0</tag>
+              <commit>
+                <hash>05c0f3c5</hash>
+                <time>1649701462</time>
+                <alm-id>1</alm-id>
+                <synopsis>Initial Commit</synopsis>
+                <internal-doc>Initial Commit of the ReleaseFab open-source project.</internal-doc>
+                <external-doc />
+              </commit>
+            </content>
+          </deliveryInformation>
         </importer>
       </importers>
       <component name="library" relevant="true">
@@ -32,14 +58,29 @@
               <parameter>(?ms).*VERSION = "(\d+\.)?(\d+\.)?(\*|\d+)"*</parameter>
               <parameter>${1}${2}${3}</parameter>
             </parameters>
+            <deliveryInformation name="1.0.0" isNew="true">
+              <content>
+                <string>1.0.0</string>
+              </content>
+            </deliveryInformation>
           </importer>
           <importer name="Important Information" version="1.0.0">
             <assigner name="Ignore" />
             <parameters number="0" />
+            <deliveryInformation name="1.0.0" isNew="false">
+              <content>
+                <string>-</string>
+              </content>
+            </deliveryInformation>
           </importer>
           <importer name="Git Commits" version="1.0.0">
             <assigner name="Ignore" />
             <parameters number="0" />
+            <deliveryInformation name="1.0.0" isNew="false">
+              <content>
+                <string>-</string>
+              </content>
+            </deliveryInformation>
           </importer>
         </importers>
       </component>
@@ -52,14 +93,29 @@
               <parameter>(?ms).*VERSION = "(\d+\.)?(\d+\.)?(\*|\d+)"*</parameter>
               <parameter>${1}${2}${3}</parameter>
             </parameters>
+            <deliveryInformation name="1.0.0" isNew="true">
+              <content>
+                <string>1.0.0</string>
+              </content>
+            </deliveryInformation>
           </importer>
           <importer name="Important Information" version="1.0.0">
             <assigner name="Ignore" />
             <parameters number="0" />
+            <deliveryInformation name="1.0.0" isNew="false">
+              <content>
+                <string>-</string>
+              </content>
+            </deliveryInformation>
           </importer>
           <importer name="Git Commits" version="1.0.0">
             <assigner name="Ignore" />
             <parameters number="0" />
+            <deliveryInformation name="1.0.0" isNew="false">
+              <content>
+                <string>-</string>
+              </content>
+            </deliveryInformation>
           </importer>
         </importers>
       </component>
@@ -68,14 +124,29 @@
           <importer name="Version" version="1.0.0">
             <assigner name="Ignore" />
             <parameters number="0" />
+            <deliveryInformation name="1.0.0" isNew="false">
+              <content>
+                <string>-</string>
+              </content>
+            </deliveryInformation>
           </importer>
           <importer name="Important Information" version="1.0.0">
             <assigner name="Ignore" />
             <parameters number="0" />
+            <deliveryInformation name="1.0.0" isNew="false">
+              <content>
+                <string>-</string>
+              </content>
+            </deliveryInformation>
           </importer>
           <importer name="Git Commits" version="1.0.0">
             <assigner name="Ignore" />
             <parameters number="0" />
+            <deliveryInformation name="1.0.0" isNew="false">
+              <content>
+                <string>-</string>
+              </content>
+            </deliveryInformation>
           </importer>
         </importers>
         <component name="version" relevant="true">
@@ -87,14 +158,29 @@
                 <parameter>(?ms).*VERSION = "(\d+\.)?(\d+\.)?(\*|\d+)"*</parameter>
                 <parameter>${1}${2}${3}</parameter>
               </parameters>
+              <deliveryInformation name="1.0.0" isNew="true">
+                <content>
+                  <string>1.0.0</string>
+                </content>
+              </deliveryInformation>
             </importer>
             <importer name="Important Information" version="1.0.0">
               <assigner name="Ignore" />
               <parameters number="0" />
+              <deliveryInformation name="1.0.0" isNew="false">
+                <content>
+                  <string>-</string>
+                </content>
+              </deliveryInformation>
             </importer>
             <importer name="Git Commits" version="1.0.0">
               <assigner name="Ignore" />
               <parameters number="0" />
+              <deliveryInformation name="1.0.0" isNew="false">
+                <content>
+                  <string>-</string>
+                </content>
+              </deliveryInformation>
             </importer>
           </importers>
         </component>
@@ -107,14 +193,29 @@
                 <parameter>(?ms).*VERSION = "(\d+\.)?(\d+\.)?(\*|\d+)"*</parameter>
                 <parameter>${1}${2}${3}</parameter>
               </parameters>
+              <deliveryInformation name="1.0.0" isNew="true">
+                <content>
+                  <string>1.0.0</string>
+                </content>
+              </deliveryInformation>
             </importer>
             <importer name="Important Information" version="1.0.0">
               <assigner name="Ignore" />
               <parameters number="0" />
+              <deliveryInformation name="1.0.0" isNew="false">
+                <content>
+                  <string>-</string>
+                </content>
+              </deliveryInformation>
             </importer>
             <importer name="Git Commits" version="1.0.0">
               <assigner name="Ignore" />
               <parameters number="0" />
+              <deliveryInformation name="1.0.0" isNew="false">
+                <content>
+                  <string>-</string>
+                </content>
+              </deliveryInformation>
             </importer>
           </importers>
         </component>
@@ -127,14 +228,29 @@
                 <parameter>(?ms).*VERSION = "(\d+\.)?(\d+\.)?(\*|\d+)"*</parameter>
                 <parameter>${1}${2}${3}</parameter>
               </parameters>
+              <deliveryInformation name="1.0.0" isNew="true">
+                <content>
+                  <string>1.0.0</string>
+                </content>
+              </deliveryInformation>
             </importer>
             <importer name="Important Information" version="1.0.0">
               <assigner name="Ignore" />
               <parameters number="0" />
+              <deliveryInformation name="1.0.0" isNew="false">
+                <content>
+                  <string>-</string>
+                </content>
+              </deliveryInformation>
             </importer>
             <importer name="Git Commits" version="1.0.0">
               <assigner name="Ignore" />
               <parameters number="0" />
+              <deliveryInformation name="1.0.0" isNew="false">
+                <content>
+                  <string>-</string>
+                </content>
+              </deliveryInformation>
             </importer>
           </importers>
         </component>
@@ -150,14 +266,29 @@
             <parameter>(?ms).*\(build (\d+\.)(\d+\.)(\d+\+)(\d+)\)*</parameter>
             <parameter>${1}${2}${3}${4}</parameter>
           </parameters>
+          <deliveryInformation name="1.0.0" isNew="true">
+            <content>
+              <string>11.0.13+8</string>
+            </content>
+          </deliveryInformation>
         </importer>
         <importer name="Important Information" version="1.0.0">
           <assigner name="Ignore" />
           <parameters number="0" />
+          <deliveryInformation name="1.0.0" isNew="false">
+            <content>
+              <string>-</string>
+            </content>
+          </deliveryInformation>
         </importer>
         <importer name="Git Commits" version="1.0.0">
           <assigner name="Ignore" />
           <parameters number="0" />
+          <deliveryInformation name="1.0.0" isNew="false">
+            <content>
+              <string>-</string>
+            </content>
+          </deliveryInformation>
         </importer>
       </importers>
     </component>
