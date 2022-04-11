@@ -1,4 +1,0 @@
-{short description};
-Issue: #{itemID};
-API-modification: Y[{yes}]/N[{no}];
-{internal doc}
