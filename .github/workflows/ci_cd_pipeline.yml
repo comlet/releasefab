@@ -201,7 +201,7 @@ jobs:
       run: |
             mkdir ${{ env.PRODUCTS_PATH }}/redirect
             touch ${{ env.PRODUCTS_PATH }}/redirect/index.html
-            echo '<head><meta http-equiv="Refresh" content="0; url='/ReleaseFab/${{ env.RELEASE_VERSION }}'"/></head>' > ${{ env.PRODUCTS_PATH }}/redirect/index.html
+            echo '<head><meta http-equiv="Refresh" content="0; url='/releasefab/${{ env.RELEASE_VERSION }}'"/></head>' > ${{ env.PRODUCTS_PATH }}/redirect/index.html
       if: startsWith(github.ref, 'refs/tags/')
 
     - name: Deploy redirection file to root

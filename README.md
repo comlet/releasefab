@@ -47,4 +47,4 @@ When contributing please always adhere to the [Code of Conduct](CODE_OF_CONDUCT.
 
 This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at [LICENSE.md](LICENSE.md) or https://www.eclipse.org/legal/epl-2.0/. SPDX-License-Identifier: EPL-2.0.
 
-The project uses open-source libraries and image resources. A list of the libraries used by this project can be obtained in the [Bill of Materials](https://github.com/comlet/releasefab/wiki/Bill-of-Materials). This is also where attribution to the image resources utilized in the project can be found.
+The project uses open-source libraries and image resources. A list of the libraries used by this project can be obtained in the [Bill of Materials](https://github.com/comlet/releasefab/wiki/Bill_of_Materials). This is also where attribution to the image resources utilized in the project can be found.
