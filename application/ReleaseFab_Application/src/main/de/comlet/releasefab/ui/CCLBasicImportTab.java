@@ -54,6 +54,8 @@ import org.jdom2.Element;
  */
 public class CCLBasicImportTab extends ACLBasicTab implements PropertyChangeListener
 {
+   private static final String TREEEDITOR = "treeeditor";
+
    /** Position of the assignment column */
    private static final int ASSIGNMENT_COLUMN = 1;
 
@@ -268,7 +270,7 @@ public class CCLBasicImportTab extends ACLBasicTab implements PropertyChangeList
          mTree.getColumn(column).setWidth(editor.minimumWidth);
       }
 
-      control.setData("treeeditor", editor);
+      control.setData(TREEEDITOR, editor);
 
       editor.setEditor(control, treeItem, column);
    }
@@ -281,7 +283,7 @@ public class CCLBasicImportTab extends ACLBasicTab implements PropertyChangeList
     */
    private static void expandTextfield(Text textfield)
    {
-      Object data = textfield.getData("treeeditor");
+      Object data = textfield.getData(TREEEDITOR);
 
       if (data instanceof TreeEditor)
       {
@@ -312,7 +314,7 @@ public class CCLBasicImportTab extends ACLBasicTab implements PropertyChangeList
     */
    private static void collapseTextfield(Text textfield)
    {
-      Object data = textfield.getData("treeeditor");
+      Object data = textfield.getData(TREEEDITOR);
 
       if (data instanceof TreeEditor)
       {
@@ -400,7 +402,6 @@ public class CCLBasicImportTab extends ACLBasicTab implements PropertyChangeList
          switch (e.type)
          {
             case SWT.KeyDown:
-            {
                switch (e.character)
                {
                   case SWT.CR:
@@ -420,33 +421,25 @@ public class CCLBasicImportTab extends ACLBasicTab implements PropertyChangeList
                      // the text doesn't fit in one line anymore
                      expandTextIfTooLong(textBox);
                }
-
                break;
-            }
 
             case SWT.KeyUp:
-            {
                if (e.character != SWT.CR && e.character != SWT.ESC)
                {
                   expandTextIfTooLong(textBox);
                }
 
                break;
-            }
 
             case SWT.FocusOut:
-            {
                // collapse the text field when it loses focus
                collapseTextfield(textBox);
                break;
-            }
 
             case SWT.FocusIn:
-            {
                // expand the text field when it gains focus and if it's text is
                // too long to fit in only one line
                expandTextIfTooLong(textBox);
-            }
          }
       }
    }

@@ -156,26 +156,21 @@ public class CCLProgramArguments
       switch (key)
       {
          case CLI:
-         {
             this.mCli = true;
             break;
-         }
+
          case DOCBOOK:
-         {
             this.mIsDocBook = true;
             break;
-         }
+
          case CUSTOMERDOCBOOK:
-         {
             this.mIsCustomerDocBook = true;
             this.mIsDocBook = true;
             break;
-         }
+
          default:
-         {
             checkForParameter(key, parameter);
             switchKey(key, parameter);
-         }
       }
    }
    
@@ -211,59 +206,48 @@ public class CCLProgramArguments
       switch (key)
       {
          case SOURCE:
-         {
             this.mSource = mParameterArray[1];
             break;
-         }
+
          case CONFIG:
-         {
             this.mConfig = mParameterArray[1];
             break;
-         }
+
          case ADDDELIVERY:
-         {
             this.mIsDelivery = true;
             this.setDeliveryNames(mParameterArray[1]);
             break;
-         }
+
          case RESULTFILE:
-         {
             this.mOutputFile = mParameterArray[1];
             break;
-         }
+
          case FROM:
-         {
             this.mFrom = mParameterArray[1];
             break;
-         }
+
          case TO:
-         {
             this.mTo = mParameterArray[1];
             break;
-         }
+
          case PW:
-         {
             this.mUserPassword = mParameterArray[1].toCharArray();
             break;
-         }
+
          case USER:
-         {
             this.mUserName = mParameterArray[1];
             break;
-         }
+
          case GENERALSETTINGS:
-         {
             this.mGeneralSettings = mParameterArray[1];
             break;
-         }
+
          case HELP:
             // intentional fall through to default.
          default:
-         {
             printError("\n");
             System.exit(0);
             break;
-         }
       }
    }
 

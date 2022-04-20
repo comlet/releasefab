@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CCLDescriptionParserTest
 {
+   private static final String ITEM_ID = "Item-ID: #{itemID}";
    private static final String API_MODIFICATION = "API-modification Y[]/N[X]";
    private static final String ITEM_ID_KEY = "Item-ID: #";
    private static final String INTERNAL_DOCUMENTATION_KEY = "internal documentation:";
@@ -40,11 +41,11 @@ class CCLDescriptionParserTest
    private static final String TEST_SHORT_DESCRIPTION = "Test short description";
    private static final String STANDARD_DELIMITER = "**********";
    
-   private static final String COMMIT_TEMPLATE_STANDARD = "{short description}" + STANDARD_DELIMITER + "Item-ID: #{itemID}" +
+   private static final String COMMIT_TEMPLATE_STANDARD = "{short description}" + STANDARD_DELIMITER + ITEM_ID +
          STANDARD_DELIMITER + "API-modification Y[{yes}]/N[{no}]" + STANDARD_DELIMITER + "internal documentation:{internal doc}" +
          STANDARD_DELIMITER + "external documentation:{external doc}" + STANDARD_DELIMITER + "reviewed by:{reviewer}";
 
-   private static final String COMMIT_TEMPLATE_OPTION_ONE = "{short description}" + "," + "Item-ID: #{itemID}" + "," +
+   private static final String COMMIT_TEMPLATE_OPTION_ONE = "{short description}" + "," + ITEM_ID + "," +
          "API-modification Y[{yes}]/N[{no}]" + "," + "internal documentation:{internal doc}" + "," +
          "external documentation:{external doc}" + "," + "reviewed by:{reviewer}";
 
@@ -52,7 +53,7 @@ class CCLDescriptionParserTest
          "API-modification Y[{yes}]/N[{no}]internal documentation:{internal doc}" +
          "external documentation:{external doc}reviewed by:{reviewer}";
 
-   private static final String COMMIT_TEMPLATE_OPTION_THREE = "Item-ID: #{itemID}" +
+   private static final String COMMIT_TEMPLATE_OPTION_THREE = ITEM_ID +
          "API-modification Y[{yes}]/N[{no}]internal documentation:{internal doc}" +
          "external documentation:{external doc}reviewed by:{reviewer},{short description}";
 

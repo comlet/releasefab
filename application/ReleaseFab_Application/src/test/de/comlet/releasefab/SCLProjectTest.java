@@ -73,6 +73,9 @@ class SCLProjectTest
     */
    private static CCLDirectoryHelper sDirectories;
 
+   private static final String RELEASEFAB = "releasefab";
+   private static final int NUMBER_OF_OSS_LINES = 97;
+   
    /**
     * Directory containing the control XML-Files for the tests of this class.
     * The path is relative to the "Working Directory".
@@ -83,7 +86,7 @@ class SCLProjectTest
                                                 "test" + File.separator + 
                                                 "de" + File.separator + 
                                                 "comlet" + File.separator + 
-                                                "releasefab" + File.separator;
+                                                RELEASEFAB + File.separator;
 
    /**
     * Path to the folder where the products of the tests should be exported to.
@@ -96,7 +99,7 @@ class SCLProjectTest
                                                 "test" + File.separator + 
                                                 "de" + File.separator + 
                                                 "comlet" + File.separator + 
-                                                "releasefab" + File.separator;
+                                                RELEASEFAB + File.separator;
 
    /**
     * Name of the file containing the control XML-Document under
@@ -140,7 +143,7 @@ class SCLProjectTest
     * values should only be changed when the test concept is changed, because
     * therefore new control XML-Files need to be exported.
     */
-   private static final List<String> DELIVERIES_UNDER_TEST = List.of("1.0.0.0", "2.0.0.0", "3.0.0.0");
+   private static final List<String> DELIVERIES_UNDER_TEST = List.of("1.0.0.0", DELIVERY_UNDER_TEST, "3.0.0.0");
 
    /**
     * Holds the actual CCLDelivery instances for the deliveries defined in
@@ -254,7 +257,7 @@ class SCLProjectTest
       setCorrectOrder();
       loginToALMService();
       
-      SCLSettings.add(CCLXMLConstants.XML_ROOT_FORMAT, "releasefab", EnumSet.of(ECLSettingsType.PROJECT));
+      SCLSettings.add(CCLXMLConstants.XML_ROOT_FORMAT, RELEASEFAB, EnumSet.of(ECLSettingsType.PROJECT));
       comp.setName("Test-Component");
 
       // A TreeSet is used to allow the Visitor Pattern to function properly
@@ -314,7 +317,7 @@ class SCLProjectTest
 
       String toAppend = "</importers></component></components></releasefab>";
 
-      assertXMLEquals(sDirectories.getIn(), sDirectories.getOut(), FILENAME_VERSIONS, 97, toAppend);
+      assertXMLEquals(sDirectories.getIn(), sDirectories.getOut(), FILENAME_VERSIONS, NUMBER_OF_OSS_LINES, toAppend);
    }
 
    /**

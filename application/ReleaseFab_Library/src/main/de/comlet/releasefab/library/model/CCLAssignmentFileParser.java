@@ -34,9 +34,6 @@ import org.jdom2.Element;
 public class CCLAssignmentFileParser extends ACLAssignmentStrategy
 {
    private static final int NROFPARAMETERS = 3;
-   private static final int FIRSTPARAMETER = 0;
-   private static final int SECONDPARAMETER = 1;
-   private static final int THIRDPARAMETER = 2;
    private static final String NAME = "File Parser";
    private static final String USAGE_MESSAGE = NAME + ":\n " +
                                                "Job: Extracts value out of a file.\n" +
@@ -101,9 +98,9 @@ public class CCLAssignmentFileParser extends ACLAssignmentStrategy
    public Element getData(List<CCLParameter> aParameters, CCLComponent aComponent, CCLDelivery aDelivery, CCLDelivery formerDelivery,
          ACLImportStrategy aImporter, String projectRoot, CCLComponent initialComponent)
    {
-      String filename = aParameters.get(FIRSTPARAMETER).getValue().trim();
-      String regex = aParameters.get(SECONDPARAMETER).getValue().trim();
-      String format = aParameters.get(THIRDPARAMETER).getValue().trim();
+      String filename = aParameters.get(INDEX_ZERO).getValue().trim();
+      String regex = aParameters.get(INDEX_ONE).getValue().trim();
+      String format = aParameters.get(INDEX_TWO).getValue().trim();
 
       String errorHeader = aComponent + ":" + aImporter + ":" + getName() + ":";
 

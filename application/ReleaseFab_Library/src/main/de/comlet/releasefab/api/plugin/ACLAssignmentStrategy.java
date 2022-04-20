@@ -31,6 +31,12 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class ACLAssignmentStrategy
 {
+   protected static final Integer INDEX_ZERO = 0;
+   protected static final Integer INDEX_ONE = 1;
+   protected static final Integer INDEX_TWO = 2;
+   protected static final Integer INDEX_THREE = 3;
+   protected static final Integer INDEX_FOUR = 4;
+
    protected static final Logger LOGGER = LoggerFactory.getLogger(ACLAssignmentStrategy.class);
 
    /** Name of the assignment strategy */

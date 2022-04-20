@@ -70,8 +70,8 @@ public class CCLAssignmentRandom extends ACLAssignmentStrategy
 
       try
       {
-         rangeStart = Integer.parseInt(aParameters.get(0).getValue().trim());
-         rangeEnd = Integer.parseInt(aParameters.get(1).getValue().trim());
+         rangeStart = Integer.parseInt(aParameters.get(INDEX_ZERO).getValue().trim());
+         rangeEnd = Integer.parseInt(aParameters.get(INDEX_ONE).getValue().trim());
       }
       catch (RuntimeException ex)
       {

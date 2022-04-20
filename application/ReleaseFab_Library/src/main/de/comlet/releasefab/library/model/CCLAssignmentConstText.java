@@ -58,7 +58,7 @@ public class CCLAssignmentConstText extends ACLAssignmentStrategy
    public Element getData(List<CCLParameter> aParameters, CCLComponent aComponent, CCLDelivery aDelivery,
          CCLDelivery formerDelivery, ACLImportStrategy aImporter, String projectRoot, CCLComponent initialComponent)
    {
-      String text = aParameters.get(0).getValue().trim();
+      String text = aParameters.get(INDEX_ZERO).getValue().trim();
       String errorHeader = aComponent + ":" + aImporter + ":" + getName() + ":";
 
       Element desc = new Element("content");

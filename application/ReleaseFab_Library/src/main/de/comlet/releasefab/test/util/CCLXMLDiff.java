@@ -26,6 +26,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.builder.Input;
 import org.xmlunit.diff.Comparison;
@@ -45,6 +47,9 @@ import org.xmlunit.diff.ElementSelectors;
  */
 public final class CCLXMLDiff
 {
+   /** Initialize logger for this class */
+   private static final Logger LOGGER = LoggerFactory.getLogger(CCLXMLDiff.class);
+
    /**
     * Error String in case a difference was found.
     */
@@ -178,6 +183,7 @@ public final class CCLXMLDiff
             builder.append(currentLine);
          }
       } catch (IOException e) {
+         LOGGER.error("IO Exception", e);
          Assert.fail(FOUND_A_DIFFERENCE + e.getMessage());
       }
 	  
