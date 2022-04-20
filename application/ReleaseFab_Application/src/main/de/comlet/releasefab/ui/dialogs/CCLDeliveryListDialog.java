@@ -87,7 +87,6 @@ public class CCLDeliveryListDialog extends Dialog
    public CCLDeliveryListDialog(Shell parent, int style, Collection<CCLDelivery> deliveries)
    {
       super(parent, style);
-      setText("Export delivery");
       mShell = new Shell(Display.getCurrent());
       mShell.setImage(new Image(mShell.getDisplay(), ICLResourceAnchor.class.getResourceAsStream("releasefab.ico")));
       mDeliveries = deliveries;
