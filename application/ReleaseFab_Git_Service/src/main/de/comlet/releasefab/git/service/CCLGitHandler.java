@@ -167,14 +167,14 @@ public final class CCLGitHandler implements AutoCloseable
       @Override
       public Iterator<ICLCommitContainer> iterator()
       {
-    	   boolean includeMergeCommits = Boolean.parseBoolean(SCLSettings.get(CCLXMLConstants.XML_INCLUDE_MERGE_COMMITS));
-    	   LogCommand log = mGit.log();
+         boolean includeMergeCommits = Boolean.parseBoolean(SCLSettings.get(CCLXMLConstants.XML_INCLUDE_MERGE_COMMITS));
+         LogCommand log = mGit.log();
 
-    	   if (!includeMergeCommits)
-    	   {
-    	      log.setRevFilter(RevFilter.NO_MERGES);
-    	   }    	 
-    	 
+         if (!includeMergeCommits)
+         {
+            log.setRevFilter(RevFilter.NO_MERGES);
+         }
+
          try
          {
             if (mToObject == null)

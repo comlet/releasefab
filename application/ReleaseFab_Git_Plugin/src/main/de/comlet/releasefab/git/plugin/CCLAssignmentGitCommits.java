@@ -92,7 +92,7 @@ public class CCLAssignmentGitCommits extends ACLAssignmentStrategyExt
    protected Element getFormerVCSTag(List<CCLParameter> parameters, CCLComponent component, CCLDelivery delivery,
          CCLDelivery formerDelivery, String projectRoot) throws CCLInternalException
    {
-      String path = parameters.isEmpty() ? projectRoot : parameters.get(0).getValue();
+      String path = parameters.isEmpty() ? projectRoot : parameters.get(INDEX_ZERO).getValue();
 
       // Starting point: former tag or git root node.
       ICLTagContainer formerTag = null;

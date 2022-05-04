@@ -80,8 +80,8 @@ public class CCLAssignmentLocalTag extends ACLAssignmentStrategyExt
    public Element getData(List<CCLParameter> aParameters, CCLComponent aComponent, CCLDelivery aDelivery,
          CCLDelivery formerDelivery, ACLImportStrategy aImporter, String projectRoot, CCLComponent initialComponent)
    {
-      String nameOfProject = aParameters.get(0).getValue().trim();
-      String baseline = aParameters.get(1).getValue().trim();
+      String nameOfProject = aParameters.get(INDEX_ZERO).getValue().trim();
+      String baseline = aParameters.get(INDEX_ONE).getValue().trim();
       String errorHeader = aComponent + ":" + aImporter + ":" + getName() + ":";
       
       Element desc = new Element("content");

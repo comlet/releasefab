@@ -37,10 +37,6 @@ public class CCLAssignmentCommandExecuter extends ACLAssignmentStrategy
     * Number of parameters for command executor
     */
    private static final int NROFPARAMETERS = 4;
-   private static final int FIRSTPARAMETER = 0;
-   private static final int SECONDPARAMETER = 1;
-   private static final int THIRDPARAMETER = 2;
-   private static final int FOURTHPARAMETER = 3;
 
    private static final String USAGE_MESSAGE = "Command Executer:\n " + 
          "Job: Assigns a value delivered by an external program.\n" + 
@@ -83,7 +79,7 @@ public class CCLAssignmentCommandExecuter extends ACLAssignmentStrategy
    public Element getData(List<CCLParameter> parameters, CCLComponent component, CCLDelivery delivery,
          CCLDelivery formerDelivery, ACLImportStrategy importer, String projectRoot, CCLComponent initialComponent)
    {
-      String command = parameters.get(FIRSTPARAMETER).getValue();
+      String command = parameters.get(INDEX_ZERO).getValue();
 
       String errorHeader = component + ":" + importer + ":" + getName() + ":";
 
@@ -95,9 +91,9 @@ public class CCLAssignmentCommandExecuter extends ACLAssignmentStrategy
          return desc;
       }
 
-      String arguments = parameters.get(SECONDPARAMETER).getValue();
-      String regex = parameters.get(THIRDPARAMETER).getValue();
-      String format = parameters.get(FOURTHPARAMETER).getValue();
+      String arguments = parameters.get(INDEX_ONE).getValue();
+      String regex = parameters.get(INDEX_TWO).getValue();
+      String format = parameters.get(INDEX_THREE).getValue();
 
       try
       {

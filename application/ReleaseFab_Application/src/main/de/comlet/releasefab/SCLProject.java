@@ -112,6 +112,12 @@ public final class SCLProject
     */
    private static String sExecutableRoot;
    
+   private static final String IMPORTERS = "importers";
+   private static final String PARAMETERS = "parameters";
+   private static final String VERSION = "version";
+   private static final String PROJECT_FILE_NAME = "PROJECT_FILE_NAME";
+   private static final String DELIVERY = "delivery";
+   
    /**
     * Indicates if we just want a preview of data without any changes to model
     */
@@ -123,6 +129,12 @@ public final class SCLProject
     * it just serves as the entry point to the component tree.
     */
    private static volatile CCLComponent sComponentRoot;
+
+   /**
+    * Contains all the plugins that are referenced in the open file with 
+    * version information but are not part of the Modulepath.
+    */
+   private static Set<String> sMissingPlugins = new HashSet<String>();
 
    /** Initialize logger for this class */
    private static final Logger LOGGER = LoggerFactory.getLogger(SCLProject.class);
@@ -142,12 +154,6 @@ public final class SCLProject
     */
    private CCLObservableCollection<CCLDelivery> mDeliveries = new CCLObservableCollection<>(new TreeSet<CCLDelivery>());
 
-   /**
-    * Contains all the plugins that are referenced in the open file with 
-    * version information but are not part of the Modulepath.
-    */
-   private static Set<String> sMissingPlugins = new HashSet<String>();
-   
    /**
     * Private default constructor is called once at startup time and creates the
     * only instance of the class.
@@ -215,7 +221,7 @@ public final class SCLProject
             }
 
             sProjectSettingsPath = SCLProjectHelper.getAbsoluteFilePath(
-                  sConfigRoot + File.separator + SCLSettings.get("PROJECT_FILE_NAME"), sProjectRoot);
+                  sConfigRoot + File.separator + SCLSettings.get(PROJECT_FILE_NAME), sProjectRoot);
          }
 
          File projectSettingsFile = new File(sProjectSettingsPath);
@@ -231,7 +237,7 @@ public final class SCLProject
             // if the project configuration file does not exist in the passed location,
             // try to find it in the root folder of the application.
             sProjectSettingsPath = SCLProjectHelper.getAbsoluteFilePath(SCLSettings.get("PROJECT_FILE_PATH"), sProjectRoot) +
-                         SCLSettings.get("PROJECT_FILE_NAME");
+                         SCLSettings.get(PROJECT_FILE_NAME);
          }
 
          LOGGER.trace("Project root path: {}", sProjectRoot);
@@ -240,7 +246,7 @@ public final class SCLProject
          projectSettingsFile = new File(sProjectSettingsPath);
          if (!projectSettingsFile.exists())
          {
-            throw new CCLInternalException(SCLSettings.get("PROJECT_FILE_NAME") + 
+            throw new CCLInternalException(SCLSettings.get(PROJECT_FILE_NAME) + 
                   " not found! Has to be in execution directory or alternative path " + 
                   "has to be passed by program parameters! Passed parameters are \"" + 
                   sProjectRoot + "\" and \"" + 
@@ -388,7 +394,7 @@ public final class SCLProject
    public static void save(String filePath, Collection<CCLDelivery> deliveries) throws IOException
    {
       Document doc = new Document();
-      Element project = SCLXMLUtil.createElement(SCLSettings.get(CCLXMLConstants.XML_ROOT_FORMAT), new Attribute("version", CCLAssemblyInfo.getVersion()));
+      Element project = SCLXMLUtil.createElement(SCLSettings.get(CCLXMLConstants.XML_ROOT_FORMAT), new Attribute(VERSION, CCLAssemblyInfo.getVersion()));
       doc.addContent(project);
 
       // add deliveries to document
@@ -397,13 +403,13 @@ public final class SCLProject
       {
          String strCreated = SCLProjectHelper.getDateFormatter().format(delivery.getCreated());
 
-         deliveriesXML.addContent(SCLXMLUtil.createElement("delivery", new Attribute(PARAMETER_NAME, delivery.getName()), new Attribute("integrator", delivery.getIntegrator()), new Attribute("created", strCreated)));
+         deliveriesXML.addContent(SCLXMLUtil.createElement(DELIVERY, new Attribute(PARAMETER_NAME, delivery.getName()), new Attribute("integrator", delivery.getIntegrator()), new Attribute("created", strCreated)));
       }
       
       project.addContent(deliveriesXML);
 
       // add components to document
-      Element components = new Element("components");
+      Element components = new Element(CCLXMLConstants.XML_COMPONENTS);
       saveComponentTree(getComponentRoot(), components, deliveries);
       project.addContent(components);
 
@@ -430,7 +436,7 @@ public final class SCLProject
                new Attribute(PARAMETER_NAME, component.getName()),
                new Attribute("relevant", Boolean.toString(component.getIsCustomerRelevant())));
 
-         Element importersXML = new Element("importers");
+         Element importersXML = new Element(IMPORTERS);
 
          for (ACLImportStrategy importer : SCLProject.getInstance().getImportStrategiesInViewOrder())
          {
@@ -497,7 +503,7 @@ public final class SCLProject
          ACLAssignmentStrategy assignmentStrategy)
    {
       Element impXML = SCLXMLUtil.createElement(CCLXMLConstants.XML_IMPORTER, new Attribute(PARAMETER_NAME, importer.getName()),
-            new Attribute("version", importer.getVersion()));
+            new Attribute(VERSION, importer.getVersion()));
       
       Element paramXML = null;
       
@@ -508,7 +514,7 @@ public final class SCLProject
 
          impXML.addContent(assignXML);
 
-         paramXML = SCLXMLUtil.createElement("parameters",
+         paramXML = SCLXMLUtil.createElement(PARAMETERS,
                new Attribute("number", Integer.toString(assignmentStrategy.getNrOfParameters())));
 
          List<CCLParameter> parameters = component.getParameters(importer.getName());
@@ -524,7 +530,7 @@ public final class SCLProject
          Element existingImporterXML = getImporterXMLFromOpenFile(component.getName(), importer.getName());
          
          Element assignXML = existingImporterXML.getChild(CCLXMLConstants.XML_ASSIGNER);
-         paramXML = existingImporterXML.getChild("parameters");
+         paramXML = existingImporterXML.getChild(PARAMETERS);
          
          assignXML.detach();
          paramXML.detach();
@@ -563,7 +569,7 @@ public final class SCLProject
       }
       
       Element existingXMLData = existingDoc.getRootElement();
-      Element allComponents = existingXMLData.getChild("components");
+      Element allComponents = existingXMLData.getChild(CCLXMLConstants.XML_COMPONENTS);
       
       return getImporterXML(componentName, importerName, allComponents);
    }
@@ -585,7 +591,7 @@ public final class SCLProject
          if (component.getAttributeValue("name").equals(componentName))
          {
             // get all importers
-            Element importersXML = component.getChild("importers");
+            Element importersXML = component.getChild(IMPORTERS);
             for (Element impData : importersXML.getDescendants(new ElementFilter(CCLXMLConstants.XML_IMPORTER)))
             {
                if (impData.getAttributeValue("name").equals(importerName))
@@ -631,7 +637,7 @@ public final class SCLProject
       {
          // load all deliveries from the document
          Element delXML = xmlData.getChild("deliveries");
-         for (Element delivery : delXML.getChildren("delivery"))
+         for (Element delivery : delXML.getChildren(DELIVERY))
          {
             CCLDelivery d = new CCLDelivery();
 
@@ -651,7 +657,7 @@ public final class SCLProject
          }
 
          // load all components from the document
-         Element compRoot = xmlData.getChild("components");
+         Element compRoot = xmlData.getChild(CCLXMLConstants.XML_COMPONENTS);
 
          sOpenFileName = source.getAbsolutePath();
          sNeedsSaving = false;
@@ -728,12 +734,12 @@ public final class SCLProject
          }
 
          // get all importers
-         Element importersXML = childElement.getChild("importers");
+         Element importersXML = childElement.getChild(IMPORTERS);
          for (Element impData : importersXML.getDescendants(new ElementFilter(CCLXMLConstants.XML_IMPORTER)))
          {
             // get importer name & version
             String impName = impData.getAttributeValue(PARAMETER_NAME);
-            String impVersion = impData.getAttributeValue("version");
+            String impVersion = impData.getAttributeValue(VERSION);
 
             // get importer by it's name
             ACLImportStrategy importer = SCLPluginLoader.getInstance().getImportStrategiesMap().get(impName);
@@ -814,7 +820,7 @@ public final class SCLProject
          ACLImportStrategy importer)
    {
       int i = 0;
-      Element parametersXML = impData.getChild("parameters");
+      Element parametersXML = impData.getChild(PARAMETERS);
       for (Element paramXML : parametersXML.getDescendants(new ElementFilter("parameter")))
       {
          List<CCLParameter> parameters = component.getParameters(importer.getName());
@@ -1289,7 +1295,7 @@ public final class SCLProject
                      {
                         for (Element element : info.getInformation().getDescendants(new ElementFilter("error")))
                         {
-                           element.setAttribute("delivery", delivery.getName());
+                           element.setAttribute(DELIVERY, delivery.getName());
                            element.setAttribute(CCLXMLConstants.XML_COMPONENT, component.getName());
                            element.setAttribute(CCLXMLConstants.XML_IMPORTER, importer.getName());
                            element.setAttribute(CCLXMLConstants.XML_ASSIGNER,

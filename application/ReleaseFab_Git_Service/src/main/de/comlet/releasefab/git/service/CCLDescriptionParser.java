@@ -27,14 +27,14 @@ import org.apache.commons.lang3.StringUtils;
  */
 public final class CCLDescriptionParser
 {
-   private String mCommitTemplate;
-
    private static final String SHORT_DESC_KEY = "short description";
    private static final String ITEM_ID_KEY = "itemID";
    private static final String API_YES_KEY = "yes";
    private static final String INTERNAL_DOC_KEY = "internal doc";
    private static final String EXTERNAL_DOC_KEY = "external doc";
    private static final String REVIEWER_KEY = "reviewer";
+
+   private String mCommitTemplate;
 
    public CCLDescriptionParser(String template)
    {

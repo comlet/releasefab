@@ -81,9 +81,9 @@ public class CCLAssignmentSubtree extends ACLAssignmentStrategy
    public Element getData(List<CCLParameter> parameters, CCLComponent component, CCLDelivery delivery,
          CCLDelivery formerDelivery, ACLImportStrategy importer, String projectRoot, CCLComponent initialComponent)
    {
-      String filename = parameters.get(0).getValue();
-      String rootNode = parameters.get(1).getValue();
-      String only = parameters.get(2).getValue();
+      String filename = parameters.get(INDEX_ZERO).getValue();
+      String rootNode = parameters.get(INDEX_ONE).getValue();
+      String only = parameters.get(INDEX_TWO).getValue();
 
       String errorHeader = component + ":" + importer + ":" + getName() + ":";
       String error = "";

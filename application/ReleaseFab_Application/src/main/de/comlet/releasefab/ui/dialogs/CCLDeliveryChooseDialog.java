@@ -81,7 +81,6 @@ public class CCLDeliveryChooseDialog extends Dialog
    public CCLDeliveryChooseDialog(Shell parent, int style, Collection<CCLDelivery> deliveries)
    {
       super(parent, style);
-      setText("Choose delivery");
       mShell = new Shell(Display.getCurrent());
       mShell.setImage(new Image(mShell.getDisplay(), ICLResourceAnchor.class.getResourceAsStream("releasefab.ico")));
       mDeliveries = deliveries;

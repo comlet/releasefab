@@ -73,7 +73,6 @@ public class CCLDeliveryCreateDialog extends Dialog
    public CCLDeliveryCreateDialog(Shell parent, int style)
    {
       super(parent, style);
-      setText("Create new delivery");
       mShell = new Shell(Display.getCurrent());
       mShell.setImage(new Image(mShell.getDisplay(), ICLResourceAnchor.class.getResourceAsStream("releasefab.ico")));
       mDelivery = new CCLDelivery();
