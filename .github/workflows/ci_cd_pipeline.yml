@@ -7,7 +7,7 @@ on:
 jobs:
   CI-CD:
     name: "CI/CD"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     
     # SETUP
@@ -168,15 +168,15 @@ jobs:
     # DOCUMENTATION
     - name: Generate documentation with doxygen (release)
       run: |
-          sudo apt install libclang1-9
-          sudo apt install libclang-cpp9
+          sudo apt install libclang-9-dev=1:9.0.1-12
+          sudo apt install libclang-cpp9=1:9.0.1-12
           ./gradlew doxygen -PVERSION=${{ env.RELEASE_VERSION }} --info
       if: startsWith(github.ref, 'refs/tags/')
 
     - name: Generate documentation with doxygen (develop)
       run: |
-          sudo apt install libclang1-9
-          sudo apt install libclang-cpp9
+          sudo apt install libclang-9-dev=1:9.0.1-12
+          sudo apt install libclang-cpp9=1:9.0.1-12
           ./gradlew doxygen -PVERSION=develop --info
       if: (github.ref == 'refs/heads/develop')
 
