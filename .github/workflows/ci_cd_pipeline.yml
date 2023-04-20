@@ -15,7 +15,7 @@ jobs:
       run: sudo timedatectl set-timezone Europe/Berlin
 
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: '0'
 
@@ -25,25 +25,20 @@ jobs:
           echo "PRODUCTS_PATH=/home/runner/work/releasefab/releasefab_products" >> $GITHUB_ENV
 
     - name: Set up JDK 11
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
         java-version: '11.0.17+8'
-        distribution: 'adopt'
+        distribution: 'temurin'
         cache: gradle
 
-    - name: Cache Sonar packages
-      uses: actions/cache@v1
+    - name: Restore cached packages
+      id: cache-packages-restore
+      uses: actions/cache/restore@v3
       with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-    - name: Cache Gradle packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-        restore-keys: ${{ runner.os }}-gradle
+        path: |
+          ~/.sonar/cache
+          ~/.gradle/caches
+        key: ${{ runner.os }}-releasefab
 
     # GRADLE CI/CD
     - name: Run CI/CD with gradle
@@ -77,7 +72,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
 
     - name: Checkout main
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: '0'
         ref: 'main'
@@ -168,15 +163,15 @@ jobs:
     # DOCUMENTATION
     - name: Generate documentation with doxygen (release)
       run: |
-          sudo apt install libclang-9-dev=1:9.0.1-12
-          sudo apt install libclang-cpp9=1:9.0.1-12
+          sudo apt install libclang-9-dev
+          sudo apt install libclang-cpp9
           ./gradlew doxygen -PVERSION=${{ env.RELEASE_VERSION }} --info
       if: startsWith(github.ref, 'refs/tags/')
 
     - name: Generate documentation with doxygen (develop)
       run: |
-          sudo apt install libclang-9-dev=1:9.0.1-12
-          sudo apt install libclang-cpp9=1:9.0.1-12
+          sudo apt install libclang-9-dev
+          sudo apt install libclang-cpp9
           ./gradlew doxygen -PVERSION=develop --info
       if: (github.ref == 'refs/heads/develop')
 
@@ -210,3 +205,12 @@ jobs:
         publish_dir: ${{ env.PRODUCTS_PATH }}/redirect
         keep_files: true
       if: startsWith(github.ref, 'refs/tags/')
+      
+    - name: Save packages
+      id: cache-packages-save
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          ~/.sonar/cache
+          ~/.gradle/caches
+        key: ${{ steps.cache-packages-restore.outputs.cache-primary-key }}
