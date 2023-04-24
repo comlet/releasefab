@@ -93,6 +93,7 @@ def jlinkSettingsLinux = copySpec {
         rename { String fileName ->
             fileName.replace("ReleaseFab", "ReleaseFab_Standalone")
         }
+        fileMode 0755
     }
 }
 
