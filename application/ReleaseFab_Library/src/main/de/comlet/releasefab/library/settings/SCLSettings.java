@@ -683,7 +683,7 @@ public final class SCLSettings
    public static void loadSettingsFromCLI(Map<String, String> credentials)
    {
       add(CCLXMLConstants.XML_ALM_USER_KEY, credentials.get(CCLXMLConstants.XML_ALM_USER_KEY),
-            EnumSet.of(ECLSettingsType.USER));
+            EnumSet.of(ECLSettingsType.VOLATILE));
       add(CCLXMLConstants.XML_ALM_PASSWORD_KEY, credentials.get(CCLXMLConstants.XML_ALM_PASSWORD_KEY),
             EnumSet.of(ECLSettingsType.VOLATILE));
       add(CCLXMLConstants.XML_ALM_SERVER, credentials.get(CCLXMLConstants.XML_ALM_SERVER),
