@@ -28,32 +28,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CCLDescriptionParserTest
 {
-   private static final String ITEM_ID = "Item-ID: #{itemID}";
    private static final String API_MODIFICATION = "API-modification Y[]/N[X]";
-   private static final String ITEM_ID_KEY = "Item-ID: #";
+   private static final String ITEM_ID_KEY = "Item-ID: ";
    private static final String INTERNAL_DOCUMENTATION_KEY = "internal documentation:";
    private static final String REVIEWED_BY_KEY = "reviewed by:";
    private static final String EXTERNAL_DOCUMENTATION_KEY = "external documentation:";
-   private static final String TEST_EXTERNAL_DOCUMENTATION = " Test external documentation";
-   private static final String TEST_INTERNAL_DOCUMENTATION = " Test internal documentation";
-   private static final String TEST_REVIEWER = " TestReviewer";
-   private static final String TEST_ITEM_ID = "00001";
+   private static final String TEST_EXTERNAL_DOCUMENTATION = "Test external documentation";
+   private static final String TEST_INTERNAL_DOCUMENTATION = "Test internal documentation";
+   private static final String TEST_REVIEWER = "TestReviewer";
+   private static final String TEST_ITEM_ID = "#00001";
    private static final String TEST_SHORT_DESCRIPTION = "Test short description";
    private static final String STANDARD_DELIMITER = "**********";
    
-   private static final String COMMIT_TEMPLATE_STANDARD = "{short description}" + STANDARD_DELIMITER + ITEM_ID +
-         STANDARD_DELIMITER + "API-modification Y[{yes}]/N[{no}]" + STANDARD_DELIMITER + "internal documentation:{internal doc}" +
-         STANDARD_DELIMITER + "external documentation:{external doc}" + STANDARD_DELIMITER + "reviewed by:{reviewer}";
+   private static final String COMMIT_TEMPLATE_STANDARD = "{short description}" + "\n" + STANDARD_DELIMITER + "\n" + "Item-ID:{itemID}" + "\n" +
+         STANDARD_DELIMITER + "\n" + "API-modification Y[{yes}]/N[{no}]" + "\n" + STANDARD_DELIMITER + "\n" + "internal documentation:{internal doc}" + "\n" +
+         STANDARD_DELIMITER + "\n" + "external documentation:{external doc}" + "\n" + STANDARD_DELIMITER + "\n" + "reviewed by:{reviewer}";
 
-   private static final String COMMIT_TEMPLATE_OPTION_ONE = "{short description}" + "," + ITEM_ID + "," +
+   private static final String COMMIT_TEMPLATE_OPTION_ONE = "{short description}" + "," + "Item-ID:{itemID}" + "," +
          "API-modification Y[{yes}]/N[{no}]" + "," + "internal documentation:{internal doc}" + "," +
          "external documentation:{external doc}" + "," + "reviewed by:{reviewer}";
 
-   private static final String COMMIT_TEMPLATE_OPTION_TWO = "{short description}Item-ID: #{itemID}" +
+   private static final String COMMIT_TEMPLATE_OPTION_TWO = "{short description}Item-ID:{itemID}" +
          "API-modification Y[{yes}]/N[{no}]internal documentation:{internal doc}" +
          "external documentation:{external doc}reviewed by:{reviewer}";
 
-   private static final String COMMIT_TEMPLATE_OPTION_THREE = ITEM_ID +
+   private static final String COMMIT_TEMPLATE_OPTION_THREE = "Item-ID:{itemID}" +
          "API-modification Y[{yes}]/N[{no}]internal documentation:{internal doc}" +
          "external documentation:{external doc}reviewed by:{reviewer},{short description}";
 
@@ -63,9 +62,9 @@ class CCLDescriptionParserTest
    /**
     * Standard commit message
     */
-   private static final String COMMIT_MESSAGE_STANDARD = TEST_SHORT_DESCRIPTION + STANDARD_DELIMITER + ITEM_ID_KEY + TEST_ITEM_ID + STANDARD_DELIMITER +
-         API_MODIFICATION + STANDARD_DELIMITER + INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION +
-         STANDARD_DELIMITER + EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + STANDARD_DELIMITER +
+   private static final String COMMIT_MESSAGE_STANDARD = TEST_SHORT_DESCRIPTION + "\n" + STANDARD_DELIMITER + "\n" + "Item-ID:" + TEST_ITEM_ID + "\n" + STANDARD_DELIMITER + "\n" +
+         API_MODIFICATION + "\n" + STANDARD_DELIMITER + "\n" + INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION + "\n" +
+         STANDARD_DELIMITER + "\n" + EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + "\n" + STANDARD_DELIMITER + "\n" +
          REVIEWED_BY_KEY + TEST_REVIEWER;
 
    /**
@@ -102,8 +101,32 @@ class CCLDescriptionParserTest
    /**
     * Minimal commit message in different order with special characters in values.
     */
-   private static final String COMMIT_MESSAGE_OPTION_SIX = ",X," + TEST_INTERNAL_DOCUMENTATION + "!�$%&/()=?#+**-" + "," + TEST_SHORT_DESCRIPTION + ", " + TEST_ITEM_ID + "," + TEST_EXTERNAL_DOCUMENTATION + "," + TEST_REVIEWER;
+   private static final String COMMIT_MESSAGE_OPTION_SIX = ",X," + TEST_INTERNAL_DOCUMENTATION + "!§$%&/()=?#+**-" + "," + TEST_SHORT_DESCRIPTION + ", " + TEST_ITEM_ID + "," + TEST_EXTERNAL_DOCUMENTATION + "," + TEST_REVIEWER;
 
+   private static final String COMMIT_MESSAGE_CRLF = TEST_SHORT_DESCRIPTION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + ITEM_ID_KEY + TEST_ITEM_ID + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + API_MODIFICATION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + REVIEWED_BY_KEY + TEST_REVIEWER;
+   
+   private static final String COMMIT_MESSAGE_ITEM_ID_WITH_SPACE = TEST_SHORT_DESCRIPTION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + ITEM_ID_KEY + " " + TEST_ITEM_ID + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + API_MODIFICATION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + "\r\n"
+         + STANDARD_DELIMITER + "\r\n"
+         + REVIEWED_BY_KEY + TEST_REVIEWER;
+   
    /**
     * Test parsing of all commit messages provided by {@link #provideParameters()}.
     */
@@ -136,7 +159,9 @@ class CCLDescriptionParserTest
               Arguments.of(COMMIT_MESSAGE_OPTION_TWO, COMMIT_TEMPLATE_OPTION_TWO),
               Arguments.of(COMMIT_MESSAGE_OPTION_THREE, COMMIT_TEMPLATE_OPTION_THREE),
               Arguments.of(COMMIT_MESSAGE_OPTION_FOUR, COMMIT_TEMPLATE_OPTION_FOUR),
-              Arguments.of(COMMIT_MESSAGE_OPTION_FIVE, COMMIT_TEMPLATE_OPTION_FIVE));
+              Arguments.of(COMMIT_MESSAGE_OPTION_FIVE, COMMIT_TEMPLATE_OPTION_FIVE),
+              Arguments.of(COMMIT_MESSAGE_CRLF, COMMIT_TEMPLATE_STANDARD),
+              Arguments.of(COMMIT_MESSAGE_ITEM_ID_WITH_SPACE, COMMIT_TEMPLATE_STANDARD));
    }
 
    /**
@@ -151,7 +176,7 @@ class CCLDescriptionParserTest
       assertAll(() -> assertEquals(TEST_SHORT_DESCRIPTION, result.getShortDescription()),
             () -> assertEquals(TEST_ITEM_ID, result.getCommitId()), 
             () -> assertEquals(false, result.getApiModification()),
-            () -> assertEquals(TEST_INTERNAL_DOCUMENTATION + "!�$%&/()=?#+**-", result.getInternalDoc()),
+            () -> assertEquals(TEST_INTERNAL_DOCUMENTATION + "!§$%&/()=?#+**-", result.getInternalDoc()),
             () -> assertEquals(TEST_EXTERNAL_DOCUMENTATION, result.getExternalDoc()),
             () -> assertEquals(TEST_REVIEWER, result.getReviewer()));
    }
