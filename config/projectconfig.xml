@@ -32,7 +32,7 @@
   </setting>
   <setting name="COMMIT_TEMPLATE" type="java.lang.String">
 {short description};
-Issue: #{itemID};
+Issue:{itemID};
 API-modification: Y[{yes}]/N[{no}];
 {internal doc}
   </setting>

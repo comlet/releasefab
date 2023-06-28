@@ -50,8 +50,8 @@ public final class CCLDescriptionParser
    public CCLGitCommitContainer parse(String inputString)
    {
       // Copy inputs and declare result variables
-      String input = inputString;
-      String template = mCommitTemplate;
+      String input = inputString.replace("\r", "");
+      String template = mCommitTemplate.replace("\r", "");
       CCLGitCommitContainer retValue = null;
       boolean apiMod = false;
       Map<String, String> entryMap = new HashMap<String, String>();
@@ -80,7 +80,7 @@ public final class CCLDescriptionParser
          else
          {
             // Else add key and value to the map
-            entryMap.put(key, value);
+            entryMap.put(key, value.trim());
          }
 
          // Use everything after the delimiter in the next iteration

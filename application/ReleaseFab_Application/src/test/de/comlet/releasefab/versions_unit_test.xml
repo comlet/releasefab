@@ -46,7 +46,7 @@
             </content>
           </deliveryInformation>
         </importer>
-        <importer name="Git Commits" version="1.0.0">
+        <importer name="Git Commits" version="1.1.0">
           <assigner name="Ignore" />
           <parameters number="0" />
           <deliveryInformation name="3.0.0.0" isNew="false">

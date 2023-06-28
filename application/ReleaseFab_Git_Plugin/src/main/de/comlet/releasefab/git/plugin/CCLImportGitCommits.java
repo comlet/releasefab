@@ -33,7 +33,7 @@ import org.jdom2.Element;
 public class CCLImportGitCommits extends ACLImportStrategy
 {
    private static final String NAME = "Git Commits";
-   private static final String VERSION = "1.0.0";
+   private static final String VERSION = "1.1.0";
    private static final String LICENSE = "Eclipse Public License - v 2.0";
    private static final String LICENSE_SOURCE = "https://www.eclipse.org/legal/epl-2.0/";
 

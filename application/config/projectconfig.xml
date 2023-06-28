@@ -8,7 +8,7 @@
     </item>
     <item>
       <first type="java.lang.String">IMPORTANT_INFORMATION</first>
-      <second type="java.lang.Boolean">false</second>
+      <second type="java.lang.Boolean">true</second>
     </item>
     <item>
       <first type="java.lang.String">GIT_COMMITS</first>
@@ -22,7 +22,7 @@
     </item>
     <item>
       <first type="java.lang.String">IMPORTANT_INFORMATION</first>
-      <second type="java.lang.Boolean">false</second>
+      <second type="java.lang.Boolean">true</second>
     </item>
     <item>
       <first type="java.lang.String">GIT_COMMITS</first>
@@ -31,7 +31,7 @@
   </setting>
   <setting name="COMMIT_TEMPLATE" type="java.lang.String">
 {short description};
-Issue: #{itemID};
+Issue:{itemID};
 API-modification: Y[{yes}]/N[{no}];
 {internal doc}
   </setting>

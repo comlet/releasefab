@@ -6,5 +6,4 @@ set RELEASEFAB_HOME=build_tools\releasefab
 set JAVA_EXEC="%DIR:"=%%RELEASEFAB_HOME%\bin\java"
 
 
-
-pushd %DIR% & %JAVA_EXEC% %CDS_JVM_OPTS% "-Dlogback.configurationFile=%~dp0/%RELEASEFAB_HOME%/logback.xml" -p "%~dp0/%RELEASEFAB_HOME%/app" -m releasefab.application/de.comlet.releasefab.Main source=%PROJECT_HOME% generalsettings=%~dp0/%RELEASEFAB_HOME% %* & popd
+%JAVA_EXEC% %CDS_JVM_OPTS% "-Dlogback.configurationFile=%~dp0/%RELEASEFAB_HOME%/logback.xml" -p "%~dp0/%RELEASEFAB_HOME%/app" -m releasefab.application/de.comlet.releasefab.Main source=%PROJECT_HOME% generalsettings=%~dp0/%RELEASEFAB_HOME% %*
