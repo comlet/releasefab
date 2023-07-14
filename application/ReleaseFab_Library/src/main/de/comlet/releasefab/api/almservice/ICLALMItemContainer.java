@@ -17,10 +17,14 @@
 
 package de.comlet.releasefab.api.almservice;
 
+import java.util.Optional;
+
 /**
  * Basic interface for Items of an Application Lifecycle Management System.
  */
 public interface ICLALMItemContainer
 {
    String getALMItemID();
+   
+   Optional<Integer> getIdAsInteger();
 }
