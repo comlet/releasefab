@@ -103,29 +103,29 @@ class CCLDescriptionParserTest
     */
    private static final String COMMIT_MESSAGE_OPTION_SIX = ",X," + TEST_INTERNAL_DOCUMENTATION + "!§$%&/()=?#+**-" + "," + TEST_SHORT_DESCRIPTION + ", " + TEST_ITEM_ID + "," + TEST_EXTERNAL_DOCUMENTATION + "," + TEST_REVIEWER;
 
-   private static final String COMMIT_MESSAGE_CRLF = TEST_SHORT_DESCRIPTION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + ITEM_ID_KEY + TEST_ITEM_ID + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + API_MODIFICATION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + REVIEWED_BY_KEY + TEST_REVIEWER;
+   private static final String COMMIT_MESSAGE_CRLF = TEST_SHORT_DESCRIPTION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         ITEM_ID_KEY + TEST_ITEM_ID + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         API_MODIFICATION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         REVIEWED_BY_KEY + TEST_REVIEWER;
    
-   private static final String COMMIT_MESSAGE_ITEM_ID_WITH_SPACE = TEST_SHORT_DESCRIPTION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + ITEM_ID_KEY + " " + TEST_ITEM_ID + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + API_MODIFICATION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + "\r\n"
-         + STANDARD_DELIMITER + "\r\n"
-         + REVIEWED_BY_KEY + TEST_REVIEWER;
+   private static final String COMMIT_MESSAGE_ITEM_ID_WITH_SPACE = TEST_SHORT_DESCRIPTION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         ITEM_ID_KEY + " " + TEST_ITEM_ID + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         API_MODIFICATION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         INTERNAL_DOCUMENTATION_KEY + TEST_INTERNAL_DOCUMENTATION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         EXTERNAL_DOCUMENTATION_KEY + TEST_EXTERNAL_DOCUMENTATION + "\r\n" +
+         STANDARD_DELIMITER + "\r\n" +
+         REVIEWED_BY_KEY + TEST_REVIEWER;
    
    /**
     * Test parsing of all commit messages provided by {@link #provideParameters()}.
