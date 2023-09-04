@@ -2,7 +2,7 @@
  * ReleaseFab
  *
  * Copyright © 2022 comlet Verteilte Systeme GmbH
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -39,6 +39,7 @@ import static de.comlet.releasefab.ECLProgramKey.CLI;
 import static de.comlet.releasefab.ECLProgramKey.CONFIG;
 import static de.comlet.releasefab.ECLProgramKey.CUSTOMERDOCBOOK;
 import static de.comlet.releasefab.ECLProgramKey.DOCBOOK;
+import static de.comlet.releasefab.ECLProgramKey.EXPORT;
 import static de.comlet.releasefab.ECLProgramKey.FROM;
 import static de.comlet.releasefab.ECLProgramKey.GENERALSETTINGS;
 import static de.comlet.releasefab.ECLProgramKey.PW;
@@ -85,7 +86,7 @@ public final class Main
             // Set config root
             SCLProject.setConfigRoot(arguments.getConfig());
          }
-         
+
          if (null != arguments.getGeneralSettings())
          {
             // Set executable root
@@ -110,7 +111,10 @@ public final class Main
       // Write CCLProgramArguments to SCLSettings
       Map<String, String> settings = new HashMap<>();
       settings.put(CCLXMLConstants.XML_ALM_USER_KEY, arguments.getUserName());
-      settings.put(CCLXMLConstants.XML_ALM_PASSWORD_KEY, String.valueOf(arguments.getUserPassword()));
+      if (null != arguments.getUserPassword())
+      {
+         settings.put(CCLXMLConstants.XML_ALM_PASSWORD_KEY, String.valueOf(arguments.getUserPassword()));
+      }
       SCLSettings.loadSettingsFromCLI(settings);
 
       // load source file
@@ -134,7 +138,14 @@ public final class Main
          }
          else
          {
-            createDocbook(arguments);
+            if (arguments.isDocBook())
+            {
+               createDocbook(arguments);
+            }
+            else if (arguments.isExport())
+            {
+               createExport(arguments);
+            }
          }
       }
       catch (CCLInternalException |
@@ -209,7 +220,7 @@ public final class Main
          }
          else
          {
-            Set<CCLDelivery> deliveries = createDeliveries(arguments, count);
+            Set<CCLDelivery> deliveries = createDeliveries(arguments, count, arguments.isDocBook());
             SCLProject.exportDocbook(arguments.getOutputFile(), deliveries, arguments.isCustomerDocBook());
 
             LOGGER.info("Docbook export finished successfully!");
@@ -223,14 +234,45 @@ public final class Main
    }
 
    /**
+    * Creates and exports a delivery file.
+    *
+    * @param arguments The parsed command line arguments.
+    */
+   private static void createExport(CCLProgramArguments arguments)
+   {
+      try
+      {
+         int count = SCLProject.getInstance().getDeliveries().size();
+         LOGGER.info("Number of deliveries: {}", count);
+
+         if (count == 0)
+         {
+            LOGGER.info("No deliveries available");
+         }
+         else
+         {
+            Set<CCLDelivery> deliveries = createDeliveries(arguments, count, arguments.isDocBook());
+            SCLProject.save(arguments.getOutputFile(), deliveries);
+
+            LOGGER.info("Delivery export finished successfully!");
+         }
+      }
+      catch (IOException | RuntimeException e)
+      {
+         final String logMsg = Main.class.getName() + ": " + e;
+         LOGGER.error(logMsg);
+      }
+   }
+
+   /**
     * Creates a {@link Set} of deliveries to be exported.
     * The {@link Set} is created according to the passed parameters.
-    * 
+    *
     * @param arguments Program arguments passed as CLI parameter
     * @param count Number of deliveries to be exported
     * @return A {@link Set} of deliveries
     */
-   private static Set<CCLDelivery> createDeliveries(CCLProgramArguments arguments, int count)
+   private static Set<CCLDelivery> createDeliveries(CCLProgramArguments arguments, int count, boolean isDocBook)
    {
       Set<CCLDelivery> deliveries;
 
@@ -243,7 +285,8 @@ public final class Main
       {
          LOGGER.info("Latest delivery: {}", deliveryArray[0].getName());
 
-         if (count > 1)
+         // only if docbook export is wanted
+         if (count > 1 && isDocBook)
          {
             LOGGER.info("Former delivery: {}", deliveryArray[1].getName());
             //export the two latest deliveries
@@ -359,31 +402,39 @@ public final class Main
    {
       StringBuilder sb = new StringBuilder();
       sb.append("\n");
-      sb.append("Usage: releasefab.bat " + CLI + " " + SOURCE + "=<path_to_project_root> " + PW + "=password [" + USER + "=username] [" + ADDDELIVERY + "=filename] [" + DOCBOOK + " " + RESULTFILE + "=filename [" + FROM + "=old_delivery] [" + TO + "=new_delivery]]\n");
-      sb.append("   "  + SOURCE + "=<path_to_project_root>" + "\tFolder containing project to be documented\n");
-      sb.append("   " + PW + "=password"                    + "\t\t\t\tpassword for ALM System\n");
-      sb.append("   " + USER + "=username"                  + "\t\t\tusername for ALM System and creating delivery\n");
-      sb.append("   [" + CONFIG + "=<path_to_config>]"      + "\t\tXML-File containing releasefab config\n");
-      sb.append("   [" + GENERALSETTINGS + "=<path_to_settings>]"      + "\tXML-File containing releasefab settings\n");
-      sb.append("   [" + ADDDELIVERY + "=name]"             + "\t\t\tcreate new delivery with given name\n");
-      sb.append("   [" + DOCBOOK + "]"                      + "\t\t\t\tcreates release information in docbook format\n");
-      sb.append("   [" + CUSTOMERDOCBOOK + "]"              + "\t\t\tcreates release information in docbook format for customer\n");
-      sb.append("   [" + RESULTFILE + "=filename]"          + "\t\tsets the file to output to (also with path before file)\n");
-      sb.append("   [" + FROM + "=from_delivery]"           + "\t\t\tsets the delivery to export from\n");
-      sb.append("   [" + TO + "=to_delivery]"               + "\t\t\tsets the delivery to export up to\n");
+      sb.append("Usage: ReleaseFab.bat/ReleaseFab.sh " + CLI + " [" + PW + "=password " + USER + "=username] [" + ADDDELIVERY + "=filename] [" + DOCBOOK + "/" + CUSTOMERDOCBOOK + "/" + EXPORT + " " + RESULTFILE + "=filename [" + FROM + "=old_delivery] [" + TO + "=new_delivery]]\n");
+      sb.append("   ["  + PW + "=password]"                        + "\t\t\t"   + "password for ALM system\n");
+      sb.append("   ["  + USER + "=username]"                      + "\t\t\t"   + "username for ALM system\n");
+      sb.append("   [" + SOURCE + "=<path_to_project_root>]"       + "\t"       + "folder containing project to be documented\n");
+      sb.append("   [" + CONFIG + "=<path_to_config>]"             + "\t\t"     + "XML file containing ReleaseFab config\n");
+      sb.append("   [" + GENERALSETTINGS + "=<path_to_settings>]"  + "\t"       + "path to XML file containing ReleaseFab settings\n");
+      sb.append("   [" + ADDDELIVERY + "=name]"                    + "\t\t\t"   + "create new delivery with given name\n");
+      sb.append("   [" + DOCBOOK + "]"                             + "\t\t\t\t" + "creates release information export in docbook format\n");
+      sb.append("   [" + CUSTOMERDOCBOOK + "]"                     + "\t\t\t"   + "creates release information export in docbook format for customer\n");
+      sb.append("   [" + EXPORT + "]"                              + "\t\t\t\t" + "creates delivery export file\n");
+      sb.append("   [" + RESULTFILE + "=filename]"                 + "\t\t"     + "sets the file to output to (also with path before file)\n");
+      sb.append("   [" + FROM + "=from_delivery]"                  + "\t\t\t"   + "sets the delivery from which the export is started\n");
+      sb.append("   [" + TO + "=to_delivery]"                      + "\t\t\t"   + "sets the delivery up to which the export is performed\n");
       sb.append("\n");
-      sb.append("Example 1: releasefab.bat -cli source=c:\\git\\reference pw=XYZ delivery_name=d1\n");
+      sb.append("Example 1: ReleaseFab.bat -cli [user=username pw=XYZ] delivery_name=d1\n");
       sb.append("           Creates new delivery with name d1\n");
       sb.append("\n");
-      sb.append("Example 2: releasefab.bat -cli source=. pw=XYZ user=ccuser -docbook resultfile=Releasenotes.xml\n");
-      sb.append("           Exports release info of last deliverie compared to previous one into file Releasenotes.xml\n");
+      sb.append("Example 2: ReleaseFab.bat -cli [user=username pw=XYZ] -docbook resultfile=Releasenotes.xml\n");
+      sb.append("           Exports release info of last delivery compared to previous one into file Releasenotes.xml\n");
       sb.append("\n");
-      sb.append("Example 3: releasefab.bat -cli source=. pw=XYZ -docbook resultfile=export_docbook.xml from=d1 to=d2\n");
+      sb.append("Example 3: ReleaseFab.bat -cli [user=username pw=XYZ] -docbook resultfile=export_docbook.xml from=d1 to=d2\n");
       sb.append("           Exports release information of delivery d1 and d2 to export_docbook.xml.\n");
       sb.append("           If there are deliveries in between data could be merged.\n");
       sb.append("\n");
-      sb.append("Example 4: releasefab.bat -cli source=. pw=XYZ -docbook resultfile=export_docbook.xml from=d1\n");
+      sb.append("Example 4: ReleaseFab.bat -cli [user=username pw=XYZ] -docbook resultfile=export_docbook.xml from=d1\n");
       sb.append("           Exports release information of delivery d1 into export_docbook.xml.\n");
+      sb.append("\n");
+      sb.append("Example 5: ReleaseFab.bat -cli [user=username pw=XYZ] -export resultfile=delivery.xml\n");
+      sb.append("           Exports whole latest delivery into file delivery.xml.\n");
+      sb.append("\n");
+      sb.append("\n");
+      sb.append("To document projects / create exports outside normal git workspace ReleaseFab setup:\n\n");
+      sb.append("ReleaseFab_Standalone.bat/ReleaseFab_Standalone.sh " + CLI + " " + SOURCE + "=<path_to_project_root_to_document> " + GENERALSETTINGS + "=<path_to_releasefab_home> [" + PW + "=password " + USER + "=username] [" + ADDDELIVERY + "=filename] [" + DOCBOOK + "/" + EXPORT + " " + RESULTFILE + "=filename [" + FROM + "=old_delivery] [" + TO + "=new_delivery]]\n");
 
       return sb.toString();
    }
