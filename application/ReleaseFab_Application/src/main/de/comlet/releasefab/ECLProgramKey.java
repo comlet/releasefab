@@ -2,7 +2,7 @@
  * ReleaseFab
  *
  * Copyright © 2022 comlet Verteilte Systeme GmbH
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -24,6 +24,7 @@ public enum ECLProgramKey
    CONFIG("config"),
    CUSTOMERDOCBOOK("-customerdocbook"),
    DOCBOOK("-docbook"),
+   EXPORT("-export"),
    FROM("from"),
    HELP("-help"),
    PW("pw"),
@@ -46,7 +47,7 @@ public enum ECLProgramKey
 
    /**
     * Returns the key associated with this enum constant, as declared.
-    * 
+    *
     * @return The key associated with this enum constant
     */
    @Override

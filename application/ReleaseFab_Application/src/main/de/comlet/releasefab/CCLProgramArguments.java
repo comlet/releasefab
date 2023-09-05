@@ -2,7 +2,7 @@
  * ReleaseFab
  *
  * Copyright © 2022 comlet Verteilte Systeme GmbH
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -28,96 +28,101 @@ public class CCLProgramArguments
 {
    /** Initialize logger for this class */
    private static final Logger LOGGER = LoggerFactory.getLogger(CCLProgramArguments.class);
-   
+
    /**
     * Number of parameters for assignments of values.
     */
    private static final int TWOPARAMS = 2;
-   
+
    /**
     * Escaped double quotes for use in strings.
     */
    private static final String ESCAPEDDBLQUOTES = "\"";
-   
+
    /**
     * Start phrase for CLI message.
     */
    private static final String USETEXT = "Using " + ESCAPEDDBLQUOTES;
-   
+
    /**
     * Whether to start this application as command line tool or as gui application.
     */
    private boolean mCli;
-   
+
    /**
     * The directory containing the file with the version information.
     */
    private String mSource;
-   
+
    /**
     * The directory containing the configuration files.
     */
    private String mConfig;
-   
+
    /**
     * The last delivery to export. If mFrom isn't set this is the only delivery exported.
     */
    private String mTo;
-   
+
    /**
     * The first delivery to export.
     */
    private String mFrom;
-   
+
    /**
     * The file to export the information in docbook format to.
     */
    private String mOutputFile;
-   
+
    /**
     * The names of the deliveries to add to the current file with the version information.
     */
    private List<String> mDeliveryNames;
-   
+
    /**
     * Whether to export a docbook file containing only customer relevant information or not.
     */
    private boolean mIsCustomerDocBook;
-   
+
    /**
     * Whether to export a docbook file or not.
     */
    private boolean mIsDocBook;
-   
+
+   /**
+    * Whether to export a delivery file or not.
+    */
+   private boolean mIsExport;
+
    /**
     * Whether to add one or more deliveries.
     */
    private boolean mIsDelivery;
-   
+
    /**
     * Stores the given password.
     */
    private char[] mUserPassword;
-   
+
    /**
     * Stores the given username.
     */
    private String mUserName;
-   
+
    /**
     * Local copy of parameter array.
     */
    private String[] mParameterArray;
-   
+
    /**
     * Optional path to settings.xml (Necessary when using jlink image)
     */
    private String mGeneralSettings;
-      
+
 
    /**
     * Parses the passed program arguments and stores the results in the new object.
-    * 
+    *
     * @param args The program arguments passed to the {@link Main#main(String[])} method
     */
    public CCLProgramArguments(String[] args)
@@ -147,12 +152,12 @@ public class CCLProgramArguments
    /**
     * Handles the {@link ECLProgramKey} key without a value.
     * If key has an assigned value the pair is passed through to {@link #switchKey(ECLProgramKey, String[])}.
-    * 
+    *
     * @param key The key associated to parameter[0].
     * @param parameter The program argument split at "=".
     */
    private void switchKeyWithoutValue(ECLProgramKey key, String[] parameter)
-   {      
+   {
       switch (key)
       {
          case CLI:
@@ -168,15 +173,19 @@ public class CCLProgramArguments
             this.mIsDocBook = true;
             break;
 
+         case EXPORT:
+            this.mIsExport = true;
+            break;
+
          default:
             checkForParameter(key, parameter);
             switchKey(key, parameter);
       }
    }
-   
+
    /**
     * Handles the {@link String[]} parameter depending on the {@link ECLProgramKey} key.
-    * 
+    *
     * @param key The key associated to parameter[0].
     * @param parameter The program argument split at "=".
     */
@@ -191,14 +200,14 @@ public class CCLProgramArguments
       {
          this.mParameterArray = Arrays.copyOf(parameter, parameter.length);
       }
-      
+
       switchKeyWithValue(key);
    }
 
    /**
     * Handles the {@link ECLProgramKey} key with a value.
     * The value for the key is set accordingly.
-    * 
+    *
     * @param key The key associated to parameter[0].
     */
    private void switchKeyWithValue(ECLProgramKey key)
@@ -253,7 +262,7 @@ public class CCLProgramArguments
 
    /**
     * Prints an error if the length of {@link String[]} param is shorter than 2.
-    * 
+    *
     * @param key The command line argument key to use in the error message.
     * @param param
     */
@@ -269,12 +278,12 @@ public class CCLProgramArguments
    /**
     * Prints and logs the {@link Main#info()} startup information, the given {@link String} error and the
     * {@link Main#usage()} usage information of this program.
-    * 
+    *
     * @param error The error that occured.
     */
    private void printError(String error)
    {
-      LOGGER.info(Main.info() + error + Main.usage());
+      LOGGER.info(Main.info() + Main.usage() + error);
    }
 
    public boolean isCli()
@@ -317,6 +326,11 @@ public class CCLProgramArguments
       return mIsDocBook;
    }
 
+   public boolean isExport()
+   {
+      return mIsExport;
+   }
+
    public boolean isDelivery()
    {
       return mIsDelivery;
@@ -326,7 +340,7 @@ public class CCLProgramArguments
    {
       return mDeliveryNames;
    }
-   
+
    public char[] getUserPassword()
    {
       return mUserPassword;
@@ -352,10 +366,10 @@ public class CCLProgramArguments
          this.mDeliveryNames.add(tk.nextToken());
       }
    }
-   
+
    /**
     * Checks if the required command line arguments have been passed.
-    * 
+    *
     * @return An error message describing what is wrong with the given command line arguments.
     */
    private String validate()
@@ -370,11 +384,11 @@ public class CCLProgramArguments
       if (mCli)
       {
          validateDelivery(sb);
-         validateDocbook(sb);
+         validateExport(sb);
       }
 
       String error = sb.toString();
-      
+
       if (!error.isEmpty())
       {
          return "\n\n" + error + "\n";
@@ -387,7 +401,7 @@ public class CCLProgramArguments
 
    /**
     * Checks command line argument dependencies for creating a delivery.
-    * 
+    *
     * @param sb The {@link StringBuilder} to append errors to.
     */
    private void validateDelivery(StringBuilder sb)
@@ -408,18 +422,22 @@ public class CCLProgramArguments
             sb.append("You chose to add deliveries but didn't provide the names. Please supply " + ESCAPEDDBLQUOTES + ECLProgramKey.ADDDELIVERY + "={[d1],[d2],...}" + ESCAPEDDBLQUOTES + ".");
          }
       }
-      else if (!mIsDocBook)
+      else if ((mIsCustomerDocBook && mIsDocBook) || (mIsDocBook && mIsExport) || (mIsCustomerDocBook && mIsExport))
+      {
+         sb.append("Please select only one of the export types: " + ECLProgramKey.DOCBOOK + " / " + ECLProgramKey.CUSTOMERDOCBOOK + " / " + ECLProgramKey.EXPORT + " !\n");
+      }
+      else if (!mIsDocBook && !mIsCustomerDocBook && !mIsExport)
       {
          sb.append("Don't know what to do! Please add parameters!\n");
       }
    }
 
    /**
-    * Checks command line argument dependencies for creating docbook export.
-    * 
+    * Checks command line argument dependencies for creating docbook/delivery export.
+    *
     * @param sb The {@link StringBuilder} to append errors to.
     */
-   private void validateDocbook(StringBuilder sb)
+   private void validateExport(StringBuilder sb)
    {
       if (mOutputFile == null)
       {
@@ -431,6 +449,10 @@ public class CCLProgramArguments
          else if (mIsDocBook)
          {
             sb.append(USETEXT + ECLProgramKey.DOCBOOK + messagePart + "\n");
+         }
+         else if (mIsExport)
+         {
+            sb.append(USETEXT + ECLProgramKey.EXPORT + messagePart + "\n");
          }
       }
       if (mFrom == null && mTo != null)
