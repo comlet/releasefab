@@ -2,7 +2,7 @@
  * ReleaseFab
  *
  * Copyright © 2022 comlet Verteilte Systeme GmbH
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -33,7 +33,7 @@ import org.jdom2.Element;
 public class CCLImportGitCommits extends ACLImportStrategy
 {
    private static final String NAME = "Git Commits";
-   private static final String VERSION = "1.1.0";
+   private static final String VERSION = "1.1.1";
    private static final String LICENSE = "Eclipse Public License - v 2.0";
    private static final String LICENSE_SOURCE = "https://www.eclipse.org/legal/epl-2.0/";
 

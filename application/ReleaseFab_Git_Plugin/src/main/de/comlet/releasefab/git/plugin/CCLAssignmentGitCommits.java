@@ -2,7 +2,7 @@
  * ReleaseFab
  *
  * Copyright © 2022 comlet Verteilte Systeme GmbH
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -40,9 +40,9 @@ public class CCLAssignmentGitCommits extends ACLAssignmentStrategyExt
 {
    private static final String NAME = "Git Commits";
    private static final int NUMBER_OF_PARAMETERS = 1;
-   private static final String USAGE_MESSAGE = "Assignment Local Git Tasks:\n" + 
-         "Job: Assign tasks extracted out of git repository\n" + 
-         "Parameter 1: - optional - Git repository (e.g. E:\\augusta-git2\\augusta_sw_src\n";
+   private static final String USAGE_MESSAGE = "Assignment Local Git Tasks:\n" +
+         "Job: Assign tasks extracted out of git repository\n" +
+         "Parameter 1: - optional - Git repository (e.g. D:\\git\\project_name)\n";
 
    /**
     * Initialize information.
@@ -81,7 +81,7 @@ public class CCLAssignmentGitCommits extends ACLAssignmentStrategyExt
 
    /**
     * Get former TAG. Create Git configuration object.
-    * 
+    *
     * @param parameters parameters entered by the user
     * @param component component to be documented
     * @param delivery delivery to document the component in
@@ -92,7 +92,7 @@ public class CCLAssignmentGitCommits extends ACLAssignmentStrategyExt
    protected Element getFormerVCSTag(List<CCLParameter> parameters, CCLComponent component, CCLDelivery delivery,
          CCLDelivery formerDelivery, String projectRoot) throws CCLInternalException
    {
-      String path = parameters.isEmpty() ? projectRoot : parameters.get(INDEX_ZERO).getValue();
+      String path = parameters.get(INDEX_ZERO).getValue().isEmpty() ? projectRoot : parameters.get(INDEX_ZERO).getValue();
 
       // Starting point: former tag or git root node.
       ICLTagContainer formerTag = null;
@@ -114,7 +114,7 @@ public class CCLAssignmentGitCommits extends ACLAssignmentStrategyExt
 
    /**
     * Query for commits. Starting from the latest TAG until head revision.
-    * 
+    *
     * @param config configuration for Git handler class
     * @param formerTag TAG of the last delivery
     * @param versionControlLoader provides access to a VCS service
@@ -141,7 +141,7 @@ public class CCLAssignmentGitCommits extends ACLAssignmentStrategyExt
 
    /**
     * Generate XML-Output.
-    * 
+    *
     * @param commits Commits to be stored
     * @param sink XML-Sink to store the commits in
     * @return
