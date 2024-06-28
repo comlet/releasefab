@@ -1,7 +1,7 @@
 /**
  * ReleaseFab
  *
- * Copyright © 2022 comlet Verteilte Systeme GmbH
+ * Copyright © 2024 comlet Verteilte Systeme GmbH
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -993,10 +993,11 @@ public final class SCLProject
     * @param component component containing the information
     * @param delivery delivery containing the information
     * @param importer importer used to get the information
+    * @param init true if the call comes from {@link #getInitialComponent()}, false otherwise
     * @return detailed information about a delivery of a component
     */
    public static ACLDeliveryInformation getDeliveryInformation(CCLComponent component, CCLDelivery delivery,
-         ACLImportStrategy importer)
+         ACLImportStrategy importer, boolean init)
    {
       ACLDeliveryInformation deliveryInformation = null;
 
@@ -1010,8 +1011,15 @@ public final class SCLProject
             
             List<CCLParameter> parameters = component.getParameters(importer.getName());
 
-            deliveryInformation.setInformation(strat.getData(parameters, component, delivery,
-                  getFormerDelivery(delivery), importer, getProjectRoot()));
+            if (init)
+            {
+               deliveryInformation.setInformation(strat.getData(parameters, component, delivery,
+                        getFormerDelivery(delivery), importer, getProjectRoot(), new CCLComponent()));
+            }
+            else {
+               deliveryInformation.setInformation(strat.getData(parameters, component, delivery,
+                        getFormerDelivery(delivery), importer, getProjectRoot(), SCLProject.getInstance().getInitialComponent()));
+            }
 
             if (!SCLProject.getInstance().getDeliveries().isEmpty() && !deliveryInformation.isNew())
             {
@@ -1289,7 +1297,7 @@ public final class SCLProject
                {
                   if (!sTestMode)
                   {
-                     ACLDeliveryInformation info = getDeliveryInformation(component, delivery, importer);
+                     ACLDeliveryInformation info = getDeliveryInformation(component, delivery, importer, false);
 
                      if (!component.getDeliveryInformation().containsKey(delivery.getName() + importer.getName()) && null != info)
                      {
@@ -1480,7 +1488,7 @@ public final class SCLProject
          {
             if (!initialComponent.getDeliveryInformation().containsKey(delivery.getName() + importer.getName()))
             {
-               ACLDeliveryInformation info = SCLProject.getDeliveryInformation(initialComponent, delivery, importer);
+               ACLDeliveryInformation info = SCLProject.getDeliveryInformation(initialComponent, delivery, importer, true);
                initialComponent.getDeliveryInformation().put(delivery.getName() + importer.getName(), info);
             }
          }

@@ -1,7 +1,7 @@
 /**
  * ReleaseFab
  *
- * Copyright © 2022 comlet Verteilte Systeme GmbH
+ * Copyright © 2024 comlet Verteilte Systeme GmbH
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -368,17 +368,5 @@ public class CCLAssignmentSubtree extends ACLAssignmentStrategy
          }
       }
       return deliverInfo;
-   }
-
-   /**
-    * Overload of method
-    * {@link #getData(List, CCLComponent, CCLDelivery, CCLDelivery, ACLImportStrategy, String, CCLComponent)}
-    * without an initial component.
-    */
-   @Override
-   public Element getData(List<CCLParameter> parameters, CCLComponent component, CCLDelivery delivery,
-         CCLDelivery formerDelivery, ACLImportStrategy importer, String projectRoot)
-   {
-      return getData(parameters, component, delivery, formerDelivery, importer, projectRoot, null);
    }
 }

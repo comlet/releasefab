@@ -16,6 +16,7 @@
  */
 
 import de.comlet.releasefab.api.plugin.ACLAssignmentStrategyExt;
+import de.comlet.releasefab.api.plugin.ACLDeliveryInformation;
 
 module releasefab.library
 {
@@ -38,6 +39,7 @@ module releasefab.library
    requires transitive org.xmlunit;
    
    uses ACLAssignmentStrategyExt;
+   uses ACLDeliveryInformation;
    
    exports de.comlet.releasefab.api.plugin;
    exports de.comlet.releasefab.api.almservice;
