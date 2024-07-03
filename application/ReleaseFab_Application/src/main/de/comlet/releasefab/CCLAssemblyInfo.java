@@ -25,7 +25,7 @@ public final class CCLAssemblyInfo
 {
    private static final String PRODUCT_NAME = "ReleaseFab";
    private static final String COMPANY = "comlet Verteilte Systeme GmbH";
-   private static final String COPYRIGHT = "Copyright © 2023";
+   private static final String COPYRIGHT = "Copyright © 2024";
    private static final String VERSION = "1.1.0";
 
    private CCLAssemblyInfo()
